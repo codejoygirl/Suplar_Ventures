@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Menu, X, Package, ShoppingCart, ChevronDown, User, Wallet, Mail } from 'lucide-react';
+import { Menu, X, Package, ShoppingCart, ChevronDown, User, Wallet } from 'lucide-react';
 import { useCartStore } from '@/lib/cart-store';
 import { useWalletStore } from '@/lib/wallet-store';
 import { sendEmail } from '@/lib/email-service';
@@ -171,7 +171,7 @@ export function Navbar() {
     <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-3 flex-shrink-0">
             <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-green-600 rounded-lg flex items-center justify-center">
               <Package className="w-5 h-5 text-white" />
             </div>
@@ -179,7 +179,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6 flex-1 justify-center">
             {navigation.map((item) => (
               <div key={item.name} className="relative">
                 {item.hasDropdown ? (
@@ -190,7 +190,7 @@ export function Navbar() {
                   >
                     <Link
                       href={item.href}
-                      className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors duration-200 py-2"
+                      className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors duration-200 py-2 text-sm whitespace-nowrap"
                     >
                       <span>{item.name}</span>
                       <ChevronDown className="w-4 h-4" />
@@ -218,28 +218,20 @@ export function Navbar() {
                 ) : (
                   <Link
                     href={item.href}
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm whitespace-nowrap"
                   >
                     {item.name}
                   </Link>
                 )}
               </div>
             ))}
-            
-            <a 
-              href="mailto:info.suplar@gmail.com"
-              className="text-gray-600 hover:text-blue-600 transition-colors duration-200 flex items-center"
-            >
-              <Mail className="w-4 h-4 mr-1" />
-              info.suplar@gmail.com
-            </a>
           </div>
 
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
             <Dialog open={showRequestModal} onOpenChange={setShowRequestModal}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100">
-                  Request a Product
+                <Button variant="outline" className="bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 text-sm px-3 py-2">
+                  Request Product
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -348,7 +340,7 @@ export function Navbar() {
 
             <Dialog open={showAuthModal} onOpenChange={setShowAuthModal}>
               <DialogTrigger asChild>
-                <Button variant="ghost" onClick={() => setAuthMode('signin')}>
+                <Button variant="ghost" onClick={() => setAuthMode('signin')} className="text-sm px-3 py-2">
                   <User className="w-4 h-4 mr-2" />
                   Sign In
                 </Button>
@@ -427,11 +419,11 @@ export function Navbar() {
             <Dialog open={showWalletModal} onOpenChange={setShowWalletModal}>
               <DialogTrigger asChild>
                 <Button 
-                  className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
+                  className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-sm px-3 py-2"
                   onClick={() => !isConnected && setShowWalletModal(true)}
                 >
                   <Wallet className="w-4 h-4 mr-2" />
-                  {isConnected ? `${walletType?.toUpperCase()} Connected` : 'Connect Wallet'}
+                  {isConnected ? `${walletType?.toUpperCase()}` : 'Connect Wallet'}
                 </Button>
               </DialogTrigger>
               {!isConnected && (
@@ -470,7 +462,7 @@ export function Navbar() {
             </Dialog>
 
             {isConnected && (
-              <Button variant="outline" onClick={disconnectWallet}>
+              <Button variant="outline" onClick={disconnectWallet} className="text-sm px-3 py-2">
                 Disconnect
               </Button>
             )}
@@ -488,7 +480,7 @@ export function Navbar() {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="lg:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200 max-h-[80vh] overflow-y-auto">
               {navigation.map((item) => (
                 <div key={item.name}>
                   <Link
@@ -549,6 +541,17 @@ export function Navbar() {
                   }}
                 >
                   Sign Up
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setShowWalletModal(true);
+                  }}
+                >
+                  <Wallet className="w-4 h-4 mr-2" />
+                  {isConnected ? `${walletType?.toUpperCase()} Connected` : 'Connect Wallet'}
                 </Button>
               </div>
             </div>

@@ -28,19 +28,19 @@ const teamMembers = [
   {
     name: 'Lomi Oruchukwu Michael',
     role: 'MD / Business Development Lead',
-    image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300',
+    image: 'https://drive.google.com/uc?export=view&id=1dsnosVzURmxu6oUa2E5h1ZBsqMrEYOux3uLgDI3fdQU',
     bio: 'With experience in procurement, logistics coordination, and client engagement, Lomi leads the company\'s strategy and operations with a commitment to excellence and efficiency.'
   },
   {
     name: 'Egbu Joy Ujunwa',
     role: 'Operations Manager / CTO',
-    image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=300',
+    image: 'https://drive.google.com/uc?export=view&id=1dsnosVzURmxu6oUa2E5h1ZBsqMrEYOux3uLgDI3fdQU',
     bio: 'Manages daily operations, coordinates procurement and logistics, and specializes in payment systems and crypto integration to ensure timely and accurate delivery.'
   },
   {
     name: 'Dr. Odumu Moses Ojonugwa',
     role: 'Supply Chain & Risk Analyst',
-    image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300',
+    image: 'https://drive.google.com/uc?export=view&id=1dsnosVzURmxu6oUa2E5h1ZBsqMrEYOux3uLgDI3fdQU',
     bio: 'A seasoned economist with 10+ years\' experience in supply chain, logistics, and risk analysis. He\'s worked with UNDP, FCDO, and NEPC, and brings expertise in tools like Stata, Power BI, and EViews.'
   }
 ];
@@ -210,6 +210,10 @@ export default function AboutPage() {
                   src={member.image}
                   alt={member.name}
                   className="w-full h-48 object-cover"
+                  onError={(e) => {
+                    // Fallback to placeholder if Google Drive image fails
+                    e.currentTarget.src = 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300';
+                  }}
                 />
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-gray-900 mb-1">{member.name}</h3>
