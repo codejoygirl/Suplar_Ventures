@@ -20,7 +20,6 @@ import {
   Send,
   Facebook
 } from 'lucide-react';
-import { sendEmail } from '@/lib/email-service';
 
 export default function ContactPage() {
   const [contactForm, setContactForm] = useState({
@@ -34,37 +33,72 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const handleChange = (field: string, value: string) => {
+    setContactForm(prev => ({ ...prev, [field]: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      const emailData = {
-        to: 'info.suplar@gmail.com',
-        subject: `Contact Form: ${contactForm.subject}`,
-        message: `
-          New contact form submission:
-          
-          Name: ${contactForm.name}
-          Email: ${contactForm.email}
-          Phone: ${contactForm.phone}
-          Company: ${contactForm.company}
-          Category: ${contactForm.category}
-          Subject: ${contactForm.subject}
-          
-          Message:
-          ${contactForm.message}
-        `,
-        name: contactForm.name,
-        email: contactForm.email,
-        phone: contactForm.phone,
-        company: contactForm.company
-      };
+      const formData = new FormData();
       
-      const success = await sendEmail(emailData);
       
-      if (success) {
-        alert('Thank you for contacting us! We\'ll get back to you within 24 hours.');
+      formData.append("access_key", "2e9747df-fadd-4a49-a3de-fc9547a3e05c"); 
+      
+      // Add form fields
+      formData.append("name", contactForm.name);
+      formData.append("email", contactForm.email);
+      formData.append("phone", contactForm.phone);
+      formData.append("company", contactForm.company);
+      formData.append("subject", contactForm.subject);
+      formData.append("category", contactForm.category);
+      formData.append("message", contactForm.message);
+      
+      // Add custom recipient email
+      formData.append("to", "info.suplar@gmail.com");
+      
+      // Add custom subject line
+      formData.append("subject", `Contact Form: ${contactForm.subject} - ${contactForm.category}`);
+      
+      // Create formatted message
+      const formattedMessage = `
+New contact form submission from Suplar Ventures website:
+
+Name: ${contactForm.name}
+Email: ${contactForm.email}
+Phone: ${contactForm.phone}
+Company: ${contactForm.company}
+Category: ${contactForm.category}
+Subject: ${contactForm.subject}
+
+Message:
+${contactForm.message}
+
+---
+This email was sent from the Suplar Ventures contact form.
+Reply directly to this email to respond to the customer.
+      `;
+      
+      formData.append("message", formattedMessage);
+
+      const object = Object.fromEntries(formData);
+      const json = JSON.stringify(object);
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: json,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert('Thank you for contacting Suplar Ventures! We have received your message and will get back to you within 24 hours.');
         setContactForm({
           name: '', email: '', phone: '', company: '', 
           subject: '', category: '', message: ''
@@ -73,6 +107,7 @@ export default function ContactPage() {
         alert('Failed to send message. Please try again.');
       }
     } catch (error) {
+      console.error('Form submission error:', error);
       alert('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -161,7 +196,7 @@ export default function ContactPage() {
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Have questions about our platform? Need help with an order? 
-            We're here to help and would love to hear from you.
+            We&apos;re here to help and would love to hear from you.
           </p>
         </div>
 
@@ -182,8 +217,9 @@ export default function ContactPage() {
                       <Label htmlFor="name">Full Name *</Label>
                       <Input
                         id="name"
+                        name="name"
                         value={contactForm.name}
-                        onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                        onChange={(e) => handleChange('name', e.target.value)}
                         required
                       />
                     </div>
@@ -191,9 +227,10 @@ export default function ContactPage() {
                       <Label htmlFor="email">Email Address *</Label>
                       <Input
                         id="email"
+                        name="email"
                         type="email"
                         value={contactForm.email}
-                        onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                        onChange={(e) => handleChange('email', e.target.value)}
                         required
                       />
                     </div>
@@ -204,16 +241,18 @@ export default function ContactPage() {
                       <Label htmlFor="phone">Phone Number</Label>
                       <Input
                         id="phone"
+                        name="phone"
                         value={contactForm.phone}
-                        onChange={(e) => setContactForm({...contactForm, phone: e.target.value})}
+                        onChange={(e) => handleChange('phone', e.target.value)}
                       />
                     </div>
                     <div>
                       <Label htmlFor="company">Company</Label>
                       <Input
                         id="company"
+                        name="company"
                         value={contactForm.company}
-                        onChange={(e) => setContactForm({...contactForm, company: e.target.value})}
+                        onChange={(e) => handleChange('company', e.target.value)}
                       />
                     </div>
                   </div>
@@ -221,7 +260,7 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="category">Category</Label>
-                      <Select onValueChange={(value) => setContactForm({...contactForm, category: value})}>
+                      <Select onValueChange={(value) => handleChange('category', value)}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
@@ -239,8 +278,9 @@ export default function ContactPage() {
                       <Label htmlFor="subject">Subject *</Label>
                       <Input
                         id="subject"
+                        name="subject"
                         value={contactForm.subject}
-                        onChange={(e) => setContactForm({...contactForm, subject: e.target.value})}
+                        onChange={(e) => handleChange('subject', e.target.value)}
                         required
                       />
                     </div>
@@ -250,9 +290,10 @@ export default function ContactPage() {
                     <Label htmlFor="message">Message *</Label>
                     <Textarea
                       id="message"
+                      name="message"
                       rows={6}
                       value={contactForm.message}
-                      onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                      onChange={(e) => handleChange('message', e.target.value)}
                       placeholder="Tell us how we can help you..."
                       required
                     />
