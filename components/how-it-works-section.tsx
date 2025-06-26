@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { Search, ShoppingCart, CreditCard, Truck } from 'lucide-react';
 

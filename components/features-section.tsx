@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, CardContent } from '@/components/ui/card';
 import { Package, CreditCard, Truck, Shield, Globe, Zap } from 'lucide-react';
 

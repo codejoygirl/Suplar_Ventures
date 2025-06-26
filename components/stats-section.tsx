@@ -1,3 +1,5 @@
+'use client';
+
 import { TrendingUp, Users, Package, Globe } from 'lucide-react';
 
 const stats = [
