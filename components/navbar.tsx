@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -22,10 +22,16 @@ export function Navbar() {
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   
   const router = useRouter();
   const cartItemCount = useCartStore((state) => state.getTotalItems());
   const { isConnected, walletType, address, connectWallet, disconnectWallet } = useWalletStore();
+
+  // Prevent hydration mismatch by only rendering client-side state after mounting
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const [authForm, setAuthForm] = useState({
     name: '',
@@ -331,7 +337,7 @@ export function Navbar() {
 
             <Link href="/cart" className="relative p-2 text-gray-600 hover:text-blue-600 transition-colors">
               <ShoppingCart className="w-6 h-6" />
-              {cartItemCount > 0 && (
+              {isMounted && cartItemCount > 0 && (
                 <Badge className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center text-xs bg-red-500 text-white rounded-full">
                   {cartItemCount}
                 </Badge>
@@ -423,7 +429,7 @@ export function Navbar() {
                   onClick={() => !isConnected && setShowWalletModal(true)}
                 >
                   <Wallet className="w-4 h-4 mr-2" />
-                  {isConnected ? `${walletType?.toUpperCase()}` : 'Connect Wallet'}
+                  {isMounted && isConnected ? `${walletType?.toUpperCase()}` : 'Connect Wallet'}
                 </Button>
               </DialogTrigger>
               {!isConnected && (
@@ -461,7 +467,7 @@ export function Navbar() {
               )}
             </Dialog>
 
-            {isConnected && (
+            {isMounted && isConnected && (
               <Button variant="outline" onClick={disconnectWallet} className="text-sm px-3 py-2">
                 Disconnect
               </Button>
@@ -519,7 +525,7 @@ export function Navbar() {
                 </Button>
                 <Link href="/cart" className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 px-3 py-2">
                   <ShoppingCart className="w-5 h-5" />
-                  <span>Cart ({cartItemCount})</span>
+                  <span>Cart {isMounted ? `(${cartItemCount})` : ''}</span>
                 </Link>
                 <Button 
                   variant="ghost" 
@@ -551,7 +557,7 @@ export function Navbar() {
                   }}
                 >
                   <Wallet className="w-4 h-4 mr-2" />
-                  {isConnected ? `${walletType?.toUpperCase()} Connected` : 'Connect Wallet'}
+                  {isMounted && isConnected ? `${walletType?.toUpperCase()} Connected` : 'Connect Wallet'}
                 </Button>
               </div>
             </div>
