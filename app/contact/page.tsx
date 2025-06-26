@@ -17,7 +17,8 @@ import {
   Linkedin,
   Twitter,
   Instagram,
-  Send
+  Send,
+  Facebook
 } from 'lucide-react';
 import { sendEmail } from '@/lib/email-service';
 
@@ -83,33 +84,70 @@ export default function ContactPage() {
       icon: Mail,
       title: 'Email Us',
       details: 'info.suplar@gmail.com',
-      description: 'Send us an email anytime'
+      description: 'Send us an email anytime',
+      action: () => window.open('mailto:info.suplar@gmail.com', '_blank')
     },
     {
       icon: Phone,
       title: 'Call Us',
-      details: '+234 (0) 123 456 7890',
-      description: 'Mon-Fri from 8am to 6pm'
+      details: '+2348062249498',
+      description: 'Mon-Fri from 8am to 6pm',
+      action: () => window.open('tel:+2348062249498', '_blank')
+    },
+    {
+      icon: MessageCircle,
+      title: 'WhatsApp',
+      details: '09036735450',
+      description: 'Chat with us directly',
+      action: () => window.open('https://wa.me/2349036735450', '_blank')
     },
     {
       icon: MapPin,
       title: 'Visit Us',
-      details: 'Lagos, Nigeria',
-      description: 'Come say hello at our office'
+      details: '9 Omojolowo Street, Hotel Bus Stop, Igando',
+      description: 'Come say hello at our office',
+      action: () => window.open('https://maps.google.com/?q=9+Omojolowo+Street,+Hotel+Bus+Stop,+Igando', '_blank')
     },
     {
       icon: Clock,
       title: 'Business Hours',
       details: 'Mon-Fri: 8am-6pm',
-      description: 'Weekend support available'
+      description: 'Weekend support available',
+      action: null
     }
   ];
 
   const socialLinks = [
-    { icon: Linkedin, name: 'LinkedIn', href: '#' },
-    { icon: Twitter, name: 'Twitter', href: '#' },
-    { icon: Instagram, name: 'Instagram', href: '#' },
-    { icon: MessageCircle, name: 'WhatsApp', href: '#' }
+    { 
+      icon: Linkedin, 
+      name: 'LinkedIn', 
+      href: '#',
+      action: () => alert('LinkedIn page coming soon!')
+    },
+    { 
+      icon: Twitter, 
+      name: 'Twitter', 
+      href: '#',
+      action: () => alert('Twitter page coming soon!')
+    },
+    { 
+      icon: Instagram, 
+      name: 'Instagram', 
+      href: 'https://www.instagram.com/suplar_ventures?igsh=OTRoNTExcGI2OWZt&utm_source=qr',
+      action: () => window.open('https://www.instagram.com/suplar_ventures?igsh=OTRoNTExcGI2OWZt&utm_source=qr', '_blank')
+    },
+    { 
+      icon: Facebook, 
+      name: 'Facebook', 
+      href: 'https://www.facebook.com/share/16mKMGbGnp/?mibextid=wwXIfr',
+      action: () => window.open('https://www.facebook.com/share/16mKMGbGnp/?mibextid=wwXIfr', '_blank')
+    },
+    { 
+      icon: MessageCircle, 
+      name: 'WhatsApp', 
+      href: 'https://wa.me/2349036735450',
+      action: () => window.open('https://wa.me/2349036735450', '_blank')
+    }
   ];
 
   return (
@@ -247,9 +285,15 @@ export default function ContactPage() {
                       <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
                         <Icon className="w-5 h-5 text-blue-600" />
                       </div>
-                      <div>
+                      <div className="flex-1">
                         <h3 className="font-semibold text-gray-900">{info.title}</h3>
-                        <p className="text-gray-900">{info.details}</p>
+                        <button
+                          onClick={info.action || (() => {})}
+                          className={`text-gray-900 hover:text-blue-600 transition-colors ${info.action ? 'cursor-pointer' : 'cursor-default'}`}
+                          disabled={!info.action}
+                        >
+                          {info.details}
+                        </button>
                         <p className="text-sm text-gray-600">{info.description}</p>
                       </div>
                     </div>
@@ -272,7 +316,7 @@ export default function ContactPage() {
                         key={index}
                         variant="outline"
                         className="justify-start"
-                        onClick={() => alert(`${social.name} page coming soon!`)}
+                        onClick={social.action}
                       >
                         <Icon className="w-4 h-4 mr-2" />
                         {social.name}
@@ -322,7 +366,7 @@ export default function ContactPage() {
             <h3 className="font-semibold text-gray-900 mb-2">Response Time</h3>
             <p className="text-gray-600">
               We typically respond to all inquiries within 24 hours during business days. 
-              For urgent matters, please call us directly.
+              For urgent matters, please call us directly at +2348062249498.
             </p>
           </CardContent>
         </Card>

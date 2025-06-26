@@ -19,34 +19,29 @@ import {
   MapPin,
   Phone,
   Linkedin,
-  Twitter
+  Twitter,
+  MessageCircle
 } from 'lucide-react';
 import { sendEmail } from '@/lib/email-service';
 
 const teamMembers = [
   {
-    name: 'Adebayo Ogundimu',
-    role: 'CEO & Founder',
+    name: 'Lomi Oruchukwu Michael',
+    role: 'MD / Business Development Lead',
     image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300',
-    bio: 'Former supply chain executive with 15+ years experience in African markets.'
+    bio: 'With experience in procurement, logistics coordination, and client engagement, Lomi leads the company\'s strategy and operations with a commitment to excellence and efficiency.'
   },
   {
-    name: 'Fatima Al-Hassan',
-    role: 'CTO',
+    name: 'Egbu Joy Ujunwa',
+    role: 'Operations Manager / CTO',
     image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=300',
-    bio: 'Blockchain technology expert specializing in payment systems and crypto integration.'
+    bio: 'Manages daily operations, coordinates procurement and logistics, and specializes in payment systems and crypto integration to ensure timely and accurate delivery.'
   },
   {
-    name: 'James Ochieng',
-    role: 'Head of Operations',
+    name: 'Dr. Odumu Moses Ojonugwa',
+    role: 'Supply Chain & Risk Analyst',
     image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300',
-    bio: 'Logistics and supply chain optimization specialist with pan-African experience.'
-  },
-  {
-    name: 'Sarah Mensah',
-    role: 'Head of Business Development',
-    image: 'https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=300',
-    bio: 'Strategic partnerships and market expansion expert across West and East Africa.'
+    bio: 'A seasoned economist with 10+ years\' experience in supply chain, logistics, and risk analysis. He\'s worked with UNDP, FCDO, and NEPC, and brings expertise in tools like Stata, Power BI, and EViews.'
   }
 ];
 
@@ -208,7 +203,7 @@ export default function AboutPage() {
         {/* Team */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Meet Our Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {teamMembers.map((member, index) => (
               <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <img
@@ -239,24 +234,41 @@ export default function AboutPage() {
               <div className="space-y-4">
                 <div className="flex items-center">
                   <Mail className="w-5 h-5 text-blue-600 mr-3" />
-                  <span>info.suplar@gmail.com</span>
+                  <a href="mailto:info.suplar@gmail.com" className="hover:text-blue-600 transition-colors">
+                    info.suplar@gmail.com
+                  </a>
                 </div>
                 <div className="flex items-center">
                   <Phone className="w-5 h-5 text-blue-600 mr-3" />
-                  <span>+234 (0) 123 456 7890</span>
+                  <a href="tel:+2348062249498" className="hover:text-blue-600 transition-colors">
+                    +2348062249498
+                  </a>
+                </div>
+                <div className="flex items-center">
+                  <MessageCircle className="w-5 h-5 text-blue-600 mr-3" />
+                  <a href="https://wa.me/2349036735450" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">
+                    WhatsApp: 09036735450
+                  </a>
                 </div>
                 <div className="flex items-center">
                   <MapPin className="w-5 h-5 text-blue-600 mr-3" />
-                  <span>Lagos, Nigeria</span>
+                  <a 
+                    href="https://maps.google.com/?q=9+Omojolowo+Street,+Hotel+Bus+Stop,+Igando" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-blue-600 transition-colors"
+                  >
+                    9 Omojolowo Street, Hotel Bus Stop, Igando
+                  </a>
                 </div>
               </div>
 
               <div className="flex space-x-4 mt-6">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => alert('LinkedIn page coming soon!')}>
                   <Linkedin className="w-4 h-4 mr-2" />
                   LinkedIn
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => alert('Twitter page coming soon!')}>
                   <Twitter className="w-4 h-4 mr-2" />
                   Twitter
                 </Button>

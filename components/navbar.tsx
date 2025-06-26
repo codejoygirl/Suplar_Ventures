@@ -7,10 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, X, Package, ShoppingCart, ChevronDown, Search, Wallet, User, Mail } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Menu, X, Package, ShoppingCart, ChevronDown, User, Wallet, Mail } from 'lucide-react';
 import { useCartStore } from '@/lib/cart-store';
 import { useWalletStore } from '@/lib/wallet-store';
 import { sendEmail } from '@/lib/email-service';
@@ -117,7 +116,7 @@ export function Navbar() {
     try {
       const emailData = {
         to: 'info.suplar@gmail.com',
-        subject: 'New Product Request',
+        subject: 'New Product Request from Navbar',
         message: `
           Product Request Details:
           
@@ -172,7 +171,7 @@ export function Navbar() {
     <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-green-600 rounded-lg flex items-center justify-center">
               <Package className="w-5 h-5 text-white" />
             </div>
@@ -180,7 +179,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-6">
+          <div className="hidden lg:flex items-center space-x-8">
             {navigation.map((item) => (
               <div key={item.name} className="relative">
                 {item.hasDropdown ? (
@@ -226,6 +225,14 @@ export function Navbar() {
                 )}
               </div>
             ))}
+            
+            <a 
+              href="mailto:info.suplar@gmail.com"
+              className="text-gray-600 hover:text-blue-600 transition-colors duration-200 flex items-center"
+            >
+              <Mail className="w-4 h-4 mr-1" />
+              info.suplar@gmail.com
+            </a>
           </div>
 
           <div className="hidden lg:flex items-center space-x-4">
@@ -242,18 +249,18 @@ export function Navbar() {
                 <form onSubmit={handleRequestSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="req-name">Full Name *</Label>
+                      <Label htmlFor="nav-req-name">Full Name *</Label>
                       <Input
-                        id="req-name"
+                        id="nav-req-name"
                         value={requestForm.name}
                         onChange={(e) => setRequestForm({...requestForm, name: e.target.value})}
                         required
                       />
                     </div>
                     <div>
-                      <Label htmlFor="req-email">Email *</Label>
+                      <Label htmlFor="nav-req-email">Email *</Label>
                       <Input
-                        id="req-email"
+                        id="nav-req-email"
                         type="email"
                         value={requestForm.email}
                         onChange={(e) => setRequestForm({...requestForm, email: e.target.value})}
@@ -263,35 +270,35 @@ export function Navbar() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="req-phone">Phone</Label>
+                      <Label htmlFor="nav-req-phone">Phone</Label>
                       <Input
-                        id="req-phone"
+                        id="nav-req-phone"
                         value={requestForm.phone}
                         onChange={(e) => setRequestForm({...requestForm, phone: e.target.value})}
                       />
                     </div>
                     <div>
-                      <Label htmlFor="req-company">Company</Label>
+                      <Label htmlFor="nav-req-company">Company</Label>
                       <Input
-                        id="req-company"
+                        id="nav-req-company"
                         value={requestForm.company}
                         onChange={(e) => setRequestForm({...requestForm, company: e.target.value})}
                       />
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="req-product">Product Name *</Label>
+                    <Label htmlFor="nav-req-product">Product Name *</Label>
                     <Input
-                      id="req-product"
+                      id="nav-req-product"
                       value={requestForm.productName}
                       onChange={(e) => setRequestForm({...requestForm, productName: e.target.value})}
                       required
                     />
                   </div>
                   <div>
-                    <Label htmlFor="req-description">Product Description *</Label>
+                    <Label htmlFor="nav-req-description">Product Description *</Label>
                     <Textarea
-                      id="req-description"
+                      id="nav-req-description"
                       value={requestForm.description}
                       onChange={(e) => setRequestForm({...requestForm, description: e.target.value})}
                       required
@@ -299,25 +306,25 @@ export function Navbar() {
                   </div>
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <Label htmlFor="req-quantity">Quantity</Label>
+                      <Label htmlFor="nav-req-quantity">Quantity</Label>
                       <Input
-                        id="req-quantity"
+                        id="nav-req-quantity"
                         value={requestForm.quantity}
                         onChange={(e) => setRequestForm({...requestForm, quantity: e.target.value})}
                       />
                     </div>
                     <div>
-                      <Label htmlFor="req-budget">Budget Range</Label>
+                      <Label htmlFor="nav-req-budget">Budget Range</Label>
                       <Input
-                        id="req-budget"
+                        id="nav-req-budget"
                         value={requestForm.budget}
                         onChange={(e) => setRequestForm({...requestForm, budget: e.target.value})}
                       />
                     </div>
                     <div>
-                      <Label htmlFor="req-timeline">Timeline</Label>
+                      <Label htmlFor="nav-req-timeline">Timeline</Label>
                       <Input
-                        id="req-timeline"
+                        id="nav-req-timeline"
                         value={requestForm.timeline}
                         onChange={(e) => setRequestForm({...requestForm, timeline: e.target.value})}
                       />
@@ -353,9 +360,9 @@ export function Navbar() {
                 <form onSubmit={handleAuthSubmit} className="space-y-4">
                   {authMode === 'signup' && (
                     <div>
-                      <Label htmlFor="auth-name">Full Name *</Label>
+                      <Label htmlFor="nav-auth-name">Full Name *</Label>
                       <Input
-                        id="auth-name"
+                        id="nav-auth-name"
                         value={authForm.name}
                         onChange={(e) => setAuthForm({...authForm, name: e.target.value})}
                         required
@@ -363,9 +370,9 @@ export function Navbar() {
                     </div>
                   )}
                   <div>
-                    <Label htmlFor="auth-email">Email *</Label>
+                    <Label htmlFor="nav-auth-email">Email *</Label>
                     <Input
-                      id="auth-email"
+                      id="nav-auth-email"
                       type="email"
                       value={authForm.email}
                       onChange={(e) => setAuthForm({...authForm, email: e.target.value})}
@@ -373,9 +380,9 @@ export function Navbar() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="auth-password">Password *</Label>
+                    <Label htmlFor="nav-auth-password">Password *</Label>
                     <Input
-                      id="auth-password"
+                      id="nav-auth-password"
                       type="password"
                       value={authForm.password}
                       onChange={(e) => setAuthForm({...authForm, password: e.target.value})}
@@ -385,17 +392,17 @@ export function Navbar() {
                   {authMode === 'signup' && (
                     <>
                       <div>
-                        <Label htmlFor="auth-company">Company</Label>
+                        <Label htmlFor="nav-auth-company">Company</Label>
                         <Input
-                          id="auth-company"
+                          id="nav-auth-company"
                           value={authForm.company}
                           onChange={(e) => setAuthForm({...authForm, company: e.target.value})}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="auth-phone">Phone</Label>
+                        <Label htmlFor="nav-auth-phone">Phone</Label>
                         <Input
-                          id="auth-phone"
+                          id="nav-auth-phone"
                           value={authForm.phone}
                           onChange={(e) => setAuthForm({...authForm, phone: e.target.value})}
                         />

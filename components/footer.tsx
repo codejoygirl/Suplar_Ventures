@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Package, Linkedin, Twitter, Instagram, MessageCircle } from 'lucide-react';
+import { Package, Linkedin, Twitter, Instagram, MessageCircle, Facebook } from 'lucide-react';
 
 export function Footer() {
   const [email, setEmail] = useState('');
@@ -20,9 +20,12 @@ export function Footer() {
     setEmail('');
   };
 
-  const handleSocialClick = (platform: string) => {
-    // In a real app, these would link to actual social media pages
-    alert(`${platform} page coming soon! Follow us for updates.`);
+  const handleSocialClick = (platform: string, url?: string) => {
+    if (url) {
+      window.open(url, '_blank');
+    } else {
+      alert(`${platform} page coming soon! Follow us for updates.`);
+    }
   };
 
   return (
@@ -54,13 +57,19 @@ export function Footer() {
                 <Twitter className="w-5 h-5" />
               </button>
               <button 
-                onClick={() => handleSocialClick('Instagram')}
+                onClick={() => handleSocialClick('Instagram', 'https://www.instagram.com/suplar_ventures?igsh=OTRoNTExcGI2OWZt&utm_source=qr')}
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 <Instagram className="w-5 h-5" />
               </button>
               <button 
-                onClick={() => handleSocialClick('WhatsApp')}
+                onClick={() => handleSocialClick('Facebook', 'https://www.facebook.com/share/16mKMGbGnp/?mibextid=wwXIfr')}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <Facebook className="w-5 h-5" />
+              </button>
+              <button 
+                onClick={() => handleSocialClick('WhatsApp', 'https://wa.me/2349036735450')}
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 <MessageCircle className="w-5 h-5" />

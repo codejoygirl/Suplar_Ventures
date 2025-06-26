@@ -50,7 +50,7 @@ export function SearchFilters() {
     };
     
     console.log('Search filters:', filters);
-    alert(`Searching with filters: ${JSON.stringify(filters, null, 2)}`);
+    alert(`Searching with filters:\n\nQuery: ${filters.query || 'All products'}\nLocation: ${filters.location || 'All locations'}\nPrice Range: ${filters.priceRange || 'All prices'}`);
   };
 
   return (
