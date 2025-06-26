@@ -8,23 +8,31 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MapPin, CreditCard, Wallet } from 'lucide-react';
+import { useCartStore } from '@/lib/cart-store';
+
+const nigerianCities = [
+  { value: 'lagos-mainland', label: 'Lagos Mainland', fee: 1500 },
+  { value: 'lagos-island', label: 'Lagos Island', fee: 2000 },
+  { value: 'ibadan', label: 'Ibadan', fee: 5000 },
+  { value: 'abuja', label: 'Abuja', fee: 4500 },
+  { value: 'port-harcourt', label: 'Port Harcourt', fee: 6000 },
+  { value: 'kano', label: 'Kano', fee: 7000 },
+  { value: 'other', label: 'Other', fee: 7500 }
+];
 
 export function CartSummary() {
   const [selectedCity, setSelectedCity] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
+  const [address, setAddress] = useState('');
+  const [state, setState] = useState('');
   const router = useRouter();
+  const { getTotalPrice, items } = useCartStore();
 
-  const subtotal = 2462.46;
+  const subtotal = getTotalPrice();
   
-  // Logistics fee based on selected city
-  const getLogisticsFee = (city: string) => {
-    switch (city) {
-      case 'lagos-mainland': return 1500;
-      case 'lagos-island': return 2000;
-      case 'ibadan': return 5000;
-      case 'abuja': return 4500;
-      default: return 7500;
-    }
+  const getLogisticsFee = (cityValue: string) => {
+    const city = nigerianCities.find(c => c.value === cityValue);
+    return city ? city.fee : 2500;
   };
 
   const logisticsFee = selectedCity ? getLogisticsFee(selectedCity) : 2500;
@@ -36,8 +44,27 @@ export function CartSummary() {
       return;
     }
     
+    if (!address.trim()) {
+      alert('Please enter your delivery address.');
+      return;
+    }
+    
+    if (!paymentMethod) {
+      alert('Please select a payment method.');
+      return;
+    }
+    
     // In a real app, this would navigate to checkout with authentication check
-    alert('Checkout functionality will redirect to sign-in/sign-up if not authenticated, then process payment.');
+    alert(`Checkout Summary:
+    
+Items: ${items.length}
+Subtotal: $${subtotal.toFixed(2)}
+Logistics: ₦${logisticsFee.toLocaleString()} ($${(logisticsFee / 800).toFixed(2)})
+Total: $${total.toFixed(2)}
+Payment: ${paymentMethod}
+Address: ${address}, ${selectedCity}
+
+Proceeding to secure checkout...`);
     // router.push('/checkout');
   };
 
@@ -62,6 +89,8 @@ export function CartSummary() {
               id="address" 
               placeholder="Enter your complete delivery address"
               className="mt-1"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -72,17 +101,22 @@ export function CartSummary() {
                   <SelectValue placeholder="Select city" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="lagos-mainland">Lagos Mainland</SelectItem>
-                  <SelectItem value="lagos-island">Lagos Island</SelectItem>
-                  <SelectItem value="ibadan">Ibadan</SelectItem>
-                  <SelectItem value="abuja">Abuja</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  {nigerianCities.map((city) => (
+                    <SelectItem key={city.value} value={city.value}>
+                      {city.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
             <div>
               <Label htmlFor="state">State *</Label>
-              <Input id="state" placeholder="State" />
+              <Input 
+                id="state" 
+                placeholder="State" 
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+              />
             </div>
           </div>
           <div className="bg-blue-50 p-3 rounded-lg">
@@ -106,7 +140,7 @@ export function CartSummary() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Subtotal (3 items):</span>
+              <span className="text-gray-600">Subtotal ({items.length} items):</span>
               <span>${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
@@ -171,6 +205,7 @@ export function CartSummary() {
         size="lg" 
         className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-lg py-4"
         onClick={handleProceedToCheckout}
+        disabled={items.length === 0}
       >
         Proceed to Checkout
       </Button>

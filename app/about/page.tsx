@@ -1,0 +1,352 @@
+'use client';
+
+import { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Package, 
+  Users, 
+  Globe, 
+  Shield, 
+  Target, 
+  Heart,
+  Mail,
+  MapPin,
+  Phone,
+  Linkedin,
+  Twitter
+} from 'lucide-react';
+import { sendEmail } from '@/lib/email-service';
+
+const teamMembers = [
+  {
+    name: 'Adebayo Ogundimu',
+    role: 'CEO & Founder',
+    image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300',
+    bio: 'Former supply chain executive with 15+ years experience in African markets.'
+  },
+  {
+    name: 'Fatima Al-Hassan',
+    role: 'CTO',
+    image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=300',
+    bio: 'Blockchain technology expert specializing in payment systems and crypto integration.'
+  },
+  {
+    name: 'James Ochieng',
+    role: 'Head of Operations',
+    image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300',
+    bio: 'Logistics and supply chain optimization specialist with pan-African experience.'
+  },
+  {
+    name: 'Sarah Mensah',
+    role: 'Head of Business Development',
+    image: 'https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=300',
+    bio: 'Strategic partnerships and market expansion expert across West and East Africa.'
+  }
+];
+
+const values = [
+  {
+    icon: Shield,
+    title: 'Trust & Transparency',
+    description: 'We believe in complete transparency in all our transactions and supplier relationships.'
+  },
+  {
+    icon: Globe,
+    title: 'Global Reach, Local Focus',
+    description: 'Connecting African businesses to global suppliers while understanding local needs.'
+  },
+  {
+    icon: Target,
+    title: 'Innovation',
+    description: 'Leveraging cutting-edge technology to solve traditional supply chain challenges.'
+  },
+  {
+    icon: Heart,
+    title: 'Customer Success',
+    description: 'Your success is our success. We\'re committed to helping your business grow.'
+  }
+];
+
+const stats = [
+  { number: '1000+', label: 'Active Businesses' },
+  { number: '50K+', label: 'Products Sourced' },
+  { number: '25+', label: 'Countries' },
+  { number: '$2M+', label: 'Trade Volume' }
+];
+
+export default function AboutPage() {
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      const emailData = {
+        to: 'info.suplar@gmail.com',
+        subject: 'About Us - Contact Inquiry',
+        message: `
+          Contact inquiry from About Us page:
+          
+          Name: ${contactForm.name}
+          Email: ${contactForm.email}
+          Phone: ${contactForm.phone}
+          Company: ${contactForm.company}
+          
+          Message:
+          ${contactForm.message}
+        `,
+        name: contactForm.name,
+        email: contactForm.email,
+        phone: contactForm.phone,
+        company: contactForm.company
+      };
+      
+      const success = await sendEmail(emailData);
+      
+      if (success) {
+        alert('Thank you for reaching out! We\'ll get back to you within 24 hours.');
+        setContactForm({ name: '', email: '', phone: '', company: '', message: '' });
+        setShowContactModal(false);
+      } else {
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      alert('An error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 pt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <Badge variant="secondary" className="mb-4">About Suplar</Badge>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Transforming African Trade Through Technology
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            We're building the future of B2B commerce in Africa, connecting businesses 
+            to global suppliers through innovative blockchain technology and seamless logistics.
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+          {stats.map((stat, index) => (
+            <div key={index} className="text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">{stat.number}</div>
+              <div className="text-gray-600">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mission & Vision */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+          <Card className="p-8">
+            <div className="flex items-center mb-4">
+              <Target className="w-8 h-8 text-blue-600 mr-3" />
+              <h2 className="text-2xl font-bold text-gray-900">Our Mission</h2>
+            </div>
+            <p className="text-gray-600 leading-relaxed">
+              To democratize global trade for African businesses by providing a transparent, 
+              efficient, and technology-driven platform that connects local companies with 
+              verified international suppliers, enabling seamless procurement and fostering 
+              economic growth across the continent.
+            </p>
+          </Card>
+
+          <Card className="p-8">
+            <div className="flex items-center mb-4">
+              <Globe className="w-8 h-8 text-green-600 mr-3" />
+              <h2 className="text-2xl font-bold text-gray-900">Our Vision</h2>
+            </div>
+            <p className="text-gray-600 leading-relaxed">
+              To become Africa's leading B2B supply chain platform, empowering millions of 
+              businesses with access to global markets while building a more connected, 
+              prosperous, and sustainable African economy through innovative technology 
+              and strategic partnerships.
+            </p>
+          </Card>
+        </div>
+
+        {/* Values */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Our Values</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((value, index) => {
+              const Icon = value.icon;
+              return (
+                <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow">
+                  <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Icon className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">{value.title}</h3>
+                  <p className="text-sm text-gray-600">{value.description}</p>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Team */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Meet Our Team</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {teamMembers.map((member, index) => (
+              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-48 object-cover"
+                />
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-gray-900 mb-1">{member.name}</h3>
+                  <p className="text-blue-600 text-sm mb-3">{member.role}</p>
+                  <p className="text-gray-600 text-sm">{member.bio}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Contact Section */}
+        <div className="bg-white rounded-2xl p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+              <p className="text-gray-600 mb-6">
+                Have questions about our platform or want to learn more about how 
+                Suplar can help your business? We'd love to hear from you.
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <Mail className="w-5 h-5 text-blue-600 mr-3" />
+                  <span>info.suplar@gmail.com</span>
+                </div>
+                <div className="flex items-center">
+                  <Phone className="w-5 h-5 text-blue-600 mr-3" />
+                  <span>+234 (0) 123 456 7890</span>
+                </div>
+                <div className="flex items-center">
+                  <MapPin className="w-5 h-5 text-blue-600 mr-3" />
+                  <span>Lagos, Nigeria</span>
+                </div>
+              </div>
+
+              <div className="flex space-x-4 mt-6">
+                <Button variant="outline" size="sm">
+                  <Linkedin className="w-4 h-4 mr-2" />
+                  LinkedIn
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Twitter className="w-4 h-4 mr-2" />
+                  Twitter
+                </Button>
+              </div>
+            </div>
+
+            <div>
+              <Dialog open={showContactModal} onOpenChange={setShowContactModal}>
+                <DialogTrigger asChild>
+                  <Button className="w-full mb-4 bg-gradient-to-r from-blue-600 to-green-600">
+                    Send us a Message
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Contact Us</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleContactSubmit} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="about-name">Name *</Label>
+                        <Input
+                          id="about-name"
+                          value={contactForm.name}
+                          onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="about-email">Email *</Label>
+                        <Input
+                          id="about-email"
+                          type="email"
+                          value={contactForm.email}
+                          onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="about-phone">Phone</Label>
+                        <Input
+                          id="about-phone"
+                          value={contactForm.phone}
+                          onChange={(e) => setContactForm({...contactForm, phone: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="about-company">Company</Label>
+                        <Input
+                          id="about-company"
+                          value={contactForm.company}
+                          onChange={(e) => setContactForm({...contactForm, company: e.target.value})}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="about-message">Message *</Label>
+                      <Textarea
+                        id="about-message"
+                        value={contactForm.message}
+                        onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
+                    </Button>
+                  </form>
+                </DialogContent>
+              </Dialog>
+
+              <div className="bg-gradient-to-r from-blue-50 to-green-50 p-6 rounded-lg">
+                <h3 className="font-semibold text-gray-900 mb-2">Ready to Start?</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  Join thousands of businesses already using Suplar to streamline their procurement.
+                </p>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => window.location.href = '/products'}
+                >
+                  Browse Products
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

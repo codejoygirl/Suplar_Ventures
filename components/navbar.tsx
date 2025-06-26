@@ -5,17 +5,50 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Menu, X, Package, ShoppingCart, ChevronDown, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Menu, X, Package, ShoppingCart, ChevronDown, Search, Wallet, User, Mail } from 'lucide-react';
+import { useCartStore } from '@/lib/cart-store';
+import { useWalletStore } from '@/lib/wallet-store';
+import { sendEmail } from '@/lib/email-service';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
-  const [showRequestForm, setShowRequestForm] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+  const [showWalletModal, setShowWalletModal] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const router = useRouter();
-  const cartItemCount = 3; // This would come from cart state
+  const cartItemCount = useCartStore((state) => state.getTotalItems());
+  const { isConnected, walletType, address, connectWallet, disconnectWallet } = useWalletStore();
+
+  const [authForm, setAuthForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    company: '',
+    phone: ''
+  });
+
+  const [requestForm, setRequestForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    productName: '',
+    description: '',
+    quantity: '',
+    budget: '',
+    timeline: ''
+  });
 
   const navigation = [
-    { name: 'Home', href: '/' },
     { 
       name: 'Browse Products', 
       href: '/products',
@@ -37,20 +70,102 @@ export function Navbar() {
     { name: 'Contact Us', href: '/contact' },
   ];
 
-  const handleRequestProduct = () => {
-    setShowRequestForm(true);
-    // In a real app, this would open a modal or navigate to a form page
-    alert('Request Product feature coming soon! Please contact us directly for custom product requests.');
+  const handleAuthSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      const emailData = {
+        to: 'info.suplar@gmail.com',
+        subject: `New ${authMode === 'signup' ? 'Sign Up' : 'Sign In'} Request`,
+        message: `
+          User ${authMode === 'signup' ? 'Registration' : 'Login'} Request:
+          
+          Name: ${authForm.name}
+          Email: ${authForm.email}
+          ${authForm.company ? `Company: ${authForm.company}` : ''}
+          ${authForm.phone ? `Phone: ${authForm.phone}` : ''}
+          
+          Action: ${authMode === 'signup' ? 'Account Registration' : 'Login Attempt'}
+        `,
+        name: authForm.name,
+        email: authForm.email,
+        company: authForm.company,
+        phone: authForm.phone
+      };
+      
+      const success = await sendEmail(emailData);
+      
+      if (success) {
+        alert(`${authMode === 'signup' ? 'Registration' : 'Sign in'} request sent successfully! We'll contact you shortly.`);
+        setAuthForm({ name: '', email: '', password: '', company: '', phone: '' });
+        setShowAuthModal(false);
+      } else {
+        alert('Failed to send request. Please try again.');
+      }
+    } catch (error) {
+      alert('An error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleSignIn = () => {
-    // In a real app, this would open a sign-in modal or navigate to auth page
-    alert('Sign In functionality will be implemented with authentication provider (Clerk/Firebase Auth)');
+  const handleRequestSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      const emailData = {
+        to: 'info.suplar@gmail.com',
+        subject: 'New Product Request',
+        message: `
+          Product Request Details:
+          
+          Name: ${requestForm.name}
+          Email: ${requestForm.email}
+          Phone: ${requestForm.phone}
+          Company: ${requestForm.company}
+          
+          Product Name: ${requestForm.productName}
+          Description: ${requestForm.description}
+          Quantity: ${requestForm.quantity}
+          Budget: ${requestForm.budget}
+          Timeline: ${requestForm.timeline}
+        `,
+        name: requestForm.name,
+        email: requestForm.email,
+        phone: requestForm.phone,
+        company: requestForm.company,
+        productName: requestForm.productName
+      };
+      
+      const success = await sendEmail(emailData);
+      
+      if (success) {
+        alert('Product request sent successfully! We\'ll get back to you within 24 hours.');
+        setRequestForm({
+          name: '', email: '', phone: '', company: '', productName: '',
+          description: '', quantity: '', budget: '', timeline: ''
+        });
+        setShowRequestModal(false);
+      } else {
+        alert('Failed to send request. Please try again.');
+      }
+    } catch (error) {
+      alert('An error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleSignUp = () => {
-    // In a real app, this would open a sign-up modal or navigate to auth page
-    alert('Sign Up functionality will be implemented with authentication provider (Clerk/Firebase Auth)');
+  const handleWalletConnect = async (walletType: 'metamask' | 'freighter' | 'albedo') => {
+    try {
+      await connectWallet(walletType);
+      setShowWalletModal(false);
+      alert(`${walletType.charAt(0).toUpperCase() + walletType.slice(1)} wallet connected successfully!`);
+    } catch (error) {
+      alert(`Failed to connect ${walletType} wallet. Please make sure it's installed and try again.`);
+    }
   };
 
   return (
@@ -114,13 +229,107 @@ export function Navbar() {
           </div>
 
           <div className="hidden lg:flex items-center space-x-4">
-            <Button 
-              variant="outline" 
-              className="bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100"
-              onClick={handleRequestProduct}
-            >
-              Request a Product
-            </Button>
+            <Dialog open={showRequestModal} onOpenChange={setShowRequestModal}>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100">
+                  Request a Product
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Request a Product</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleRequestSubmit} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="req-name">Full Name *</Label>
+                      <Input
+                        id="req-name"
+                        value={requestForm.name}
+                        onChange={(e) => setRequestForm({...requestForm, name: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="req-email">Email *</Label>
+                      <Input
+                        id="req-email"
+                        type="email"
+                        value={requestForm.email}
+                        onChange={(e) => setRequestForm({...requestForm, email: e.target.value})}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="req-phone">Phone</Label>
+                      <Input
+                        id="req-phone"
+                        value={requestForm.phone}
+                        onChange={(e) => setRequestForm({...requestForm, phone: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="req-company">Company</Label>
+                      <Input
+                        id="req-company"
+                        value={requestForm.company}
+                        onChange={(e) => setRequestForm({...requestForm, company: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="req-product">Product Name *</Label>
+                    <Input
+                      id="req-product"
+                      value={requestForm.productName}
+                      onChange={(e) => setRequestForm({...requestForm, productName: e.target.value})}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="req-description">Product Description *</Label>
+                    <Textarea
+                      id="req-description"
+                      value={requestForm.description}
+                      onChange={(e) => setRequestForm({...requestForm, description: e.target.value})}
+                      required
+                    />
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="req-quantity">Quantity</Label>
+                      <Input
+                        id="req-quantity"
+                        value={requestForm.quantity}
+                        onChange={(e) => setRequestForm({...requestForm, quantity: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="req-budget">Budget Range</Label>
+                      <Input
+                        id="req-budget"
+                        value={requestForm.budget}
+                        onChange={(e) => setRequestForm({...requestForm, budget: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="req-timeline">Timeline</Label>
+                      <Input
+                        id="req-timeline"
+                        value={requestForm.timeline}
+                        onChange={(e) => setRequestForm({...requestForm, timeline: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? 'Sending...' : 'Submit Request'}
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+
             <Link href="/cart" className="relative p-2 text-gray-600 hover:text-blue-600 transition-colors">
               <ShoppingCart className="w-6 h-6" />
               {cartItemCount > 0 && (
@@ -129,13 +338,135 @@ export function Navbar() {
                 </Badge>
               )}
             </Link>
-            <Button variant="ghost" onClick={handleSignIn}>Sign In</Button>
-            <Button 
-              className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
-              onClick={handleSignUp}
-            >
-              Sign Up
-            </Button>
+
+            <Dialog open={showAuthModal} onOpenChange={setShowAuthModal}>
+              <DialogTrigger asChild>
+                <Button variant="ghost" onClick={() => setAuthMode('signin')}>
+                  <User className="w-4 h-4 mr-2" />
+                  Sign In
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{authMode === 'signin' ? 'Sign In' : 'Sign Up'}</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleAuthSubmit} className="space-y-4">
+                  {authMode === 'signup' && (
+                    <div>
+                      <Label htmlFor="auth-name">Full Name *</Label>
+                      <Input
+                        id="auth-name"
+                        value={authForm.name}
+                        onChange={(e) => setAuthForm({...authForm, name: e.target.value})}
+                        required
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <Label htmlFor="auth-email">Email *</Label>
+                    <Input
+                      id="auth-email"
+                      type="email"
+                      value={authForm.email}
+                      onChange={(e) => setAuthForm({...authForm, email: e.target.value})}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="auth-password">Password *</Label>
+                    <Input
+                      id="auth-password"
+                      type="password"
+                      value={authForm.password}
+                      onChange={(e) => setAuthForm({...authForm, password: e.target.value})}
+                      required
+                    />
+                  </div>
+                  {authMode === 'signup' && (
+                    <>
+                      <div>
+                        <Label htmlFor="auth-company">Company</Label>
+                        <Input
+                          id="auth-company"
+                          value={authForm.company}
+                          onChange={(e) => setAuthForm({...authForm, company: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="auth-phone">Phone</Label>
+                        <Input
+                          id="auth-phone"
+                          value={authForm.phone}
+                          onChange={(e) => setAuthForm({...authForm, phone: e.target.value})}
+                        />
+                      </div>
+                    </>
+                  )}
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? 'Processing...' : (authMode === 'signin' ? 'Sign In' : 'Sign Up')}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="w-full"
+                    onClick={() => setAuthMode(authMode === 'signin' ? 'signup' : 'signin')}
+                  >
+                    {authMode === 'signin' ? 'Need an account? Sign Up' : 'Have an account? Sign In'}
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+
+            <Dialog open={showWalletModal} onOpenChange={setShowWalletModal}>
+              <DialogTrigger asChild>
+                <Button 
+                  className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
+                  onClick={() => !isConnected && setShowWalletModal(true)}
+                >
+                  <Wallet className="w-4 h-4 mr-2" />
+                  {isConnected ? `${walletType?.toUpperCase()} Connected` : 'Connect Wallet'}
+                </Button>
+              </DialogTrigger>
+              {!isConnected && (
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Connect Your Wallet</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <Button
+                      onClick={() => handleWalletConnect('metamask')}
+                      className="w-full justify-start"
+                      variant="outline"
+                    >
+                      <Wallet className="w-5 h-5 mr-3" />
+                      MetaMask
+                    </Button>
+                    <Button
+                      onClick={() => handleWalletConnect('freighter')}
+                      className="w-full justify-start"
+                      variant="outline"
+                    >
+                      <Wallet className="w-5 h-5 mr-3" />
+                      Freighter (Stellar)
+                    </Button>
+                    <Button
+                      onClick={() => handleWalletConnect('albedo')}
+                      className="w-full justify-start"
+                      variant="outline"
+                    >
+                      <Wallet className="w-5 h-5 mr-3" />
+                      Albedo (Stellar)
+                    </Button>
+                  </div>
+                </DialogContent>
+              )}
+            </Dialog>
+
+            {isConnected && (
+              <Button variant="outline" onClick={disconnectWallet}>
+                Disconnect
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -143,11 +474,7 @@ export function Navbar() {
             onClick={() => setIsOpen(!isOpen)}
             className="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
           >
-            {isOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
@@ -186,7 +513,7 @@ export function Navbar() {
                   className="w-full justify-start bg-blue-50 text-blue-600"
                   onClick={() => {
                     setIsOpen(false);
-                    handleRequestProduct();
+                    setShowRequestModal(true);
                   }}
                 >
                   Request a Product
@@ -195,12 +522,24 @@ export function Navbar() {
                   <ShoppingCart className="w-5 h-5" />
                   <span>Cart ({cartItemCount})</span>
                 </Link>
-                <Button variant="ghost" className="w-full justify-start" onClick={handleSignIn}>
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start" 
+                  onClick={() => {
+                    setIsOpen(false);
+                    setAuthMode('signin');
+                    setShowAuthModal(true);
+                  }}
+                >
                   Sign In
                 </Button>
                 <Button 
                   className="w-full bg-gradient-to-r from-blue-600 to-green-600"
-                  onClick={handleSignUp}
+                  onClick={() => {
+                    setIsOpen(false);
+                    setAuthMode('signup');
+                    setShowAuthModal(true);
+                  }}
                 >
                   Sign Up
                 </Button>

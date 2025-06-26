@@ -1,53 +1,21 @@
 'use client';
 
-import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Trash2, Plus, Minus } from 'lucide-react';
-
-const cartItems = [
-  {
-    id: 1,
-    name: 'Digital Blood Pressure Monitor',
-    supplier: 'MedTech Solutions',
-    price: 89.99,
-    quantity: 2,
-    image: 'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=300',
-    category: 'Medical Equipment',
-  },
-  {
-    id: 2,
-    name: 'Laboratory Microscope',
-    supplier: 'Scientific Instruments Ltd',
-    price: 1299.99,
-    quantity: 1,
-    image: 'https://images.pexels.com/photos/2280549/pexels-photo-2280549.jpeg?auto=compress&cs=tinysrgb&w=300',
-    category: 'Lab Equipment',
-  },
-  {
-    id: 3,
-    name: 'Office Desk Chair (Ergonomic)',
-    supplier: 'Workspace Solutions',
-    price: 245.50,
-    quantity: 4,
-    image: 'https://images.pexels.com/photos/1957477/pexels-photo-1957477.jpeg?auto=compress&cs=tinysrgb&w=300',
-    category: 'Office Equipment',
-  },
-];
+import { useCartStore } from '@/lib/cart-store';
 
 export function CartItems() {
-  const [items, setItems] = useState(cartItems);
+  const { items, updateQuantity, removeItem } = useCartStore();
 
-  const updateQuantity = (id: number, newQuantity: number) => {
+  const handleQuantityChange = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
-    setItems(items.map(item => 
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    ));
+    updateQuantity(id, newQuantity);
   };
 
-  const removeItem = (id: number) => {
-    setItems(items.filter(item => item.id !== id));
+  const handleRemoveItem = (id: number) => {
+    removeItem(id);
   };
 
   return (
@@ -72,7 +40,7 @@ export function CartItems() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                  onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
                   className="w-8 h-8 p-0"
                 >
                   <Minus className="w-4 h-4" />
@@ -80,14 +48,14 @@ export function CartItems() {
                 <Input
                   type="number"
                   value={item.quantity}
-                  onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 1)}
+                  onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value) || 1)}
                   className="w-16 text-center"
                   min="1"
                 />
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                  onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                   className="w-8 h-8 p-0"
                 >
                   <Plus className="w-4 h-4" />
@@ -106,7 +74,7 @@ export function CartItems() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => removeItem(item.id)}
+                onClick={() => handleRemoveItem(item.id)}
                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
               >
                 <Trash2 className="w-4 h-4" />
@@ -117,7 +85,9 @@ export function CartItems() {
           {items.length === 0 && (
             <div className="text-center py-12">
               <p className="text-gray-500 mb-4">Your cart is empty</p>
-              <Button>Continue Shopping</Button>
+              <Button onClick={() => window.location.href = '/products'}>
+                Continue Shopping
+              </Button>
             </div>
           )}
         </div>
