@@ -185,7 +185,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6 flex-1 justify-center">
+          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6 flex-1 mx-2 justify-center">
             {navigation.map((item) => (
               <div key={item.name} className="relative">
                 {item.hasDropdown ? (
@@ -196,7 +196,7 @@ export function Navbar() {
                   >
                     <Link
                       href={item.href}
-                      className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors duration-200 py-2 text-sm whitespace-nowrap"
+                      className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors duration-200 py-2 text-[12px] whitespace-nowrap"
                     >
                       <span>{item.name}</span>
                       <ChevronDown className="w-4 h-4" />

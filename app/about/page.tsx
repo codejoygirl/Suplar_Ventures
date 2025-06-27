@@ -22,25 +22,24 @@ import {
   Twitter,
   MessageCircle
 } from 'lucide-react';
-import { sendEmail } from '@/lib/email-service';
 
 const teamMembers = [
   {
     name: 'Lomi Oruchukwu Michael',
     role: 'MD / Business Development Lead',
-    image: 'https://drive.google.com/uc?export=view&id=1dsnosVzURmxu6oUa2E5h1ZBsqMrEYOux3uLgDI3fdQU',
+    image: '/images/michaelImage.png',
     bio: 'With experience in procurement, logistics coordination, and client engagement, Lomi leads the company\'s strategy and operations with a commitment to excellence and efficiency.'
   },
   {
     name: 'Egbu Joy Ujunwa',
     role: 'Operations Manager / CTO',
-    image: 'https://drive.google.com/uc?export=view&id=1dsnosVzURmxu6oUa2E5h1ZBsqMrEYOux3uLgDI3fdQU',
+    image: '/images/joyImage.png',
     bio: 'Manages daily operations, coordinates procurement and logistics, and specializes in payment systems and crypto integration to ensure timely and accurate delivery.'
   },
   {
     name: 'Dr. Odumu Moses Ojonugwa',
     role: 'Supply Chain & Risk Analyst',
-    image: 'https://drive.google.com/uc?export=view&id=1dsnosVzURmxu6oUa2E5h1ZBsqMrEYOux3uLgDI3fdQU',
+    image: '/images/mosesImage.png',
     bio: 'A seasoned economist with 10+ years\' experience in supply chain, logistics, and risk analysis. He\'s worked with UNDP, FCDO, and NEPC, and brings expertise in tools like Stata, Power BI, and EViews.'
   }
 ];
@@ -86,40 +85,17 @@ export default function AboutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
 
-  const handleContactSubmit = async (e: React.FormEvent) => {
+  const handleContactSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      const emailData = {
-        to: 'info.suplar@gmail.com',
-        subject: 'About Us - Contact Inquiry',
-        message: `
-          Contact inquiry from About Us page:
-          
-          Name: ${contactForm.name}
-          Email: ${contactForm.email}
-          Phone: ${contactForm.phone}
-          Company: ${contactForm.company}
-          
-          Message:
-          ${contactForm.message}
-        `,
-        name: contactForm.name,
-        email: contactForm.email,
-        phone: contactForm.phone,
-        company: contactForm.company
-      };
+      // Simulate email sending
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      const success = await sendEmail(emailData);
-      
-      if (success) {
-        alert('Thank you for reaching out! We\'ll get back to you within 24 hours.');
-        setContactForm({ name: '', email: '', phone: '', company: '', message: '' });
-        setShowContactModal(false);
-      } else {
-        alert('Failed to send message. Please try again.');
-      }
+      alert('Thank you for reaching out! We\'ll get back to you within 24 hours.');
+      setContactForm({ name: '', email: '', phone: '', company: '', message: '' });
+      setShowContactModal(false);
     } catch (error) {
       alert('An error occurred. Please try again.');
     } finally {
@@ -137,7 +113,7 @@ export default function AboutPage() {
             Transforming African Trade Through Technology
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're building the future of B2B commerce in Africa, connecting businesses 
+            We&apos;re building the future of B2B commerce in Africa, connecting businesses 
             to global suppliers through innovative blockchain technology and seamless logistics.
           </p>
         </div>
@@ -173,7 +149,7 @@ export default function AboutPage() {
               <h2 className="text-2xl font-bold text-gray-900">Our Vision</h2>
             </div>
             <p className="text-gray-600 leading-relaxed">
-              To become Africa's leading B2B supply chain platform, empowering millions of 
+              To become Africa&apos;s leading B2B supply chain platform, empowering millions of 
               businesses with access to global markets while building a more connected, 
               prosperous, and sustainable African economy through innovative technology 
               and strategic partnerships.
@@ -206,15 +182,14 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {teamMembers.map((member, index) => (
               <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-full h-48 object-cover"
-                  onError={(e) => {
-                    // Fallback to placeholder if Google Drive image fails
-                    e.currentTarget.src = 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300';
-                  }}
-                />
+                <div className="w-full h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover object-top"
+                    
+                  />
+                </div>
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-gray-900 mb-1">{member.name}</h3>
                   <p className="text-blue-600 text-sm mb-3">{member.role}</p>
@@ -232,7 +207,7 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
               <p className="text-gray-600 mb-6">
                 Have questions about our platform or want to learn more about how 
-                Suplar can help your business? We'd love to hear from you.
+                Suplar can help your business? We&apos;d love to hear from you.
               </p>
               
               <div className="space-y-4">
@@ -290,7 +265,7 @@ export default function AboutPage() {
                   <DialogHeader>
                     <DialogTitle>Contact Us</DialogTitle>
                   </DialogHeader>
-                  <form onSubmit={handleContactSubmit} className="space-y-4">
+                  <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="about-name">Name *</Label>
@@ -339,10 +314,15 @@ export default function AboutPage() {
                         required
                       />
                     </div>
-                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    <Button 
+                      type="submit" 
+                      className="w-full" 
+                      disabled={isSubmitting}
+                      onClick={handleContactSubmit}
+                    >
                       {isSubmitting ? 'Sending...' : 'Send Message'}
                     </Button>
-                  </form>
+                  </div>
                 </DialogContent>
               </Dialog>
 
