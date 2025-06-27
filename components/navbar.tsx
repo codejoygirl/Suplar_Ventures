@@ -185,7 +185,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8 flex-1 mx-12 justify-center">
+          <div className="hidden lg:flex items-center space-x-6 flex-1 mx-8 justify-center">
             {navigation.map((item) => (
               <div key={item.name} className="relative">
                 {item.hasDropdown ? (
@@ -233,10 +233,10 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
+          <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
             <Dialog open={showRequestModal} onOpenChange={setShowRequestModal}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 text-sm px-4 py-2">
+                <Button variant="outline" className="bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 text-sm px-3 py-2">
                   Request Product
                 </Button>
               </DialogTrigger>
@@ -346,7 +346,7 @@ export function Navbar() {
 
             <Dialog open={showAuthModal} onOpenChange={setShowAuthModal}>
               <DialogTrigger asChild>
-                <Button variant="ghost" onClick={() => setAuthMode('signin')} className="text-sm px-4 py-2">
+                <Button variant="ghost" onClick={() => setAuthMode('signin')} className="text-sm px-3 py-2">
                   <User className="w-4 h-4 mr-2" />
                   Sign In
                 </Button>
@@ -425,7 +425,7 @@ export function Navbar() {
             <Dialog open={showWalletModal} onOpenChange={setShowWalletModal}>
               <DialogTrigger asChild>
                 <Button 
-                  className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-sm px-4 py-2"
+                  className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-sm px-3 py-2"
                   onClick={() => !isConnected && setShowWalletModal(true)}
                 >
                   <Wallet className="w-4 h-4 mr-2" />
@@ -468,7 +468,7 @@ export function Navbar() {
             </Dialog>
 
             {isMounted && isConnected && (
-              <Button variant="outline" onClick={disconnectWallet} className="text-sm px-4 py-2">
+              <Button variant="outline" onClick={disconnectWallet} className="text-sm px-3 py-2">
                 Disconnect
               </Button>
             )}
