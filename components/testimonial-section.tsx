@@ -71,7 +71,7 @@ export function TestimonialSection() {
             What Our Clients Say
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Join thousands of satisfied businesses who trust Suplar for their procurement needs.
+            Join thousands of satisfied businesses and organizations who trust Suplar for their procurement needs.
           </p>
         </div>
 

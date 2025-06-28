@@ -86,7 +86,7 @@ export function HeroSection() {
             <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border">
               <Star className="w-4 h-4 text-yellow-500 fill-current" />
               <span className="text-sm font-medium text-gray-700">
-                Trusted by 1000+ African businesses
+                Trusted by 1000+ African businesses & organizations
               </span>
             </div>
           </div>
@@ -94,13 +94,13 @@ export function HeroSection() {
           <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
             Africa's Leading
             <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent">
-              B2B Supply Platform
+              B2B & B2G Supply Platform
             </span>
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
             Source products from verified suppliers, pay with crypto or fiat, and track deliveries 
-            end-to-end. Streamline your procurement process with Suplar.
+            end-to-end. Streamline your procurement process with our comprehensive supply chain management platform.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">

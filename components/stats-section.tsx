@@ -6,8 +6,8 @@ const stats = [
   {
     icon: Users,
     value: '500+',
-    label: 'Active Businesses',
-    description: 'African companies trust Suplar',
+    label: 'Active Businesses & Organizations',
+    description: 'African companies and institutions trust Suplar',
     color: 'text-blue-600',
     bgColor: 'bg-blue-50',
   },
@@ -46,7 +46,7 @@ export function StatsSection() {
             Powering African Trade
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Join hundreds of businesses already transforming their supply chains 
+            Join hundreds of businesses and organizations already transforming their supply chains 
             with blockchain technology.
           </p>
         </div>

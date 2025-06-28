@@ -35,7 +35,7 @@ const features = [
   {
     icon: Globe,
     title: 'African Focus',
-    description: 'Optimized for African businesses with local payment methods and delivery networks.',
+    description: 'Optimized for African businesses and government organizations with local payment methods and delivery networks.',
     color: 'text-red-600',
     bgColor: 'bg-red-50',
   },
@@ -58,7 +58,7 @@ export function FeaturesSection() {
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             We combine the power of blockchain technology with traditional supply chain 
-            management to create a seamless experience for African businesses.
+            management to create a seamless experience for African businesses and government organizations.
           </p>
         </div>
         

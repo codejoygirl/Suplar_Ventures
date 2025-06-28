@@ -10,8 +10,8 @@ export default function TestimonialsPage() {
             Client Testimonials
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Hear from businesses across Africa who have transformed their procurement 
-            processes with Suplar.
+            Hear from businesses and organizations across Africa who have transformed their procurement 
+            processes with our supply chain management platform.
           </p>
         </div>
         

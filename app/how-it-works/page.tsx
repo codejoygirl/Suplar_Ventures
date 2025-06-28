@@ -83,12 +83,12 @@ const benefits = [
   {
     icon: Users,
     title: 'Trusted Network',
-    description: 'Join 1000+ businesses already using our platform.',
+    description: 'Join 1000+ businesses and organizations already using our platform.',
   },
   {
     icon: Globe,
     title: 'African Focus',
-    description: 'Optimized for African businesses with local support.',
+    description: 'Optimized for African businesses and government organizations with local support.',
   },
 ];
 
@@ -156,8 +156,8 @@ export default function HowItWorksPage() {
             Four Simple Steps to Success
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            From sourcing to delivery, our streamlined process makes global trade 
-            accessible to every African business.
+            From sourcing to delivery, our streamlined supply chain management process makes global trade 
+            accessible to every African business and government organization.
           </p>
         </div>
         
@@ -237,7 +237,7 @@ export default function HowItWorksPage() {
             Ready to Get Started?
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Join thousands of businesses already transforming their procurement process.
+            Join thousands of businesses and organizations already transforming their procurement process.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 

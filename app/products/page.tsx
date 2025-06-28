@@ -11,7 +11,7 @@ export default function ProductsPage() {
             Browse Our Product Catalogue
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Discover thousands of products from verified suppliers worldwide. 
+            Discover thousands of products from verified suppliers worldwide through our comprehensive supply chain management platform. 
             From medical equipment to industrial chemicals - we have what you need.
           </p>
         </div>

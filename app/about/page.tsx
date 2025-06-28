@@ -53,7 +53,7 @@ const values = [
   {
     icon: Globe,
     title: 'Global Reach, Local Focus',
-    description: 'Connecting African businesses to global suppliers while understanding local needs.'
+    description: 'Connecting African businesses and governments to global suppliers while understanding local needs.'
   },
   {
     icon: Target,
@@ -63,12 +63,12 @@ const values = [
   {
     icon: Heart,
     title: 'Customer Success',
-    description: 'Your success is our success. We\'re committed to helping your business grow.'
+    description: 'Your success is our success. We\'re committed to helping your business and organization grow.'
   }
 ];
 
 const stats = [
-  { number: '1000+', label: 'Active Businesses' },
+  { number: '1000+', label: 'Active Businesses & Organizations' },
   { number: '50K+', label: 'Products Sourced' },
   { number: '25+', label: 'Countries' },
   { number: '$2M+', label: 'Trade Volume' }
@@ -113,8 +113,8 @@ export default function AboutPage() {
             Transforming African Trade Through Technology
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We&apos;re building the future of B2B commerce in Africa, connecting businesses 
-            to global suppliers through innovative blockchain technology and seamless logistics.
+            We&apos;re building the future of B2B and B2G commerce in Africa, connecting businesses 
+            and government organizations to global suppliers through innovative blockchain technology and seamless logistics.
           </p>
         </div>
 
@@ -136,8 +136,8 @@ export default function AboutPage() {
               <h2 className="text-2xl font-bold text-gray-900">Our Mission</h2>
             </div>
             <p className="text-gray-600 leading-relaxed">
-              To democratize global trade for African businesses by providing a transparent, 
-              efficient, and technology-driven platform that connects local companies with 
+              To democratize global trade for African businesses and government organizations by providing a transparent, 
+              efficient, and technology-driven supply chain management platform that connects local companies and institutions with 
               verified international suppliers, enabling seamless procurement and fostering 
               economic growth across the continent.
             </p>
@@ -149,8 +149,8 @@ export default function AboutPage() {
               <h2 className="text-2xl font-bold text-gray-900">Our Vision</h2>
             </div>
             <p className="text-gray-600 leading-relaxed">
-              To become Africa&apos;s leading B2B supply chain platform, empowering millions of 
-              businesses with access to global markets while building a more connected, 
+              To become Africa&apos;s leading B2B and B2G supply chain management platform, empowering millions of 
+              businesses and government organizations with access to global markets while building a more connected, 
               prosperous, and sustainable African economy through innovative technology 
               and strategic partnerships.
             </p>
@@ -165,8 +165,8 @@ export default function AboutPage() {
               const Icon = value.icon;
               return (
                 <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow">
-                  <div className={`w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4`}>
-                    <Icon className={`w-6 h-6 text-blue-600`} />
+                  <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Icon className="w-6 h-6 text-blue-600" />
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2">{value.title}</h3>
                   <p className="text-sm text-gray-600">{value.description}</p>
@@ -206,20 +206,26 @@ export default function AboutPage() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
               <p className="text-gray-600 mb-6">
-                Have questions about our platform or want to learn more about how 
-                Suplar can help your business? We&apos;d love to hear from you.
+                Have questions about our supply chain management platform or want to learn more about how 
+                Suplar can help your business or organization? We&apos;d love to hear from you.
               </p>
               
               <div className="space-y-4">
                 <div className="flex items-center">
                   <Mail className="w-5 h-5 text-blue-600 mr-3" />
-                  <a href="mailto:info.suplar@gmail.com" className="hover:text-blue-600 transition-colors">
+                  <a 
+                    href="mailto:info.suplar@gmail.com" 
+                    className="hover:text-blue-600 transition-colors cursor-pointer"
+                  >
                     info.suplar@gmail.com
                   </a>
                 </div>
                 <div className="flex items-center">
                   <Phone className="w-5 h-5 text-blue-600 mr-3" />
-                  <a href="tel:+2348062249498" className="hover:text-blue-600 transition-colors">
+                  <a 
+                    href="tel:+2348062249498" 
+                    className="hover:text-blue-600 transition-colors cursor-pointer"
+                  >
                     +2348062249498
                   </a>
                 </div>
@@ -328,7 +334,7 @@ export default function AboutPage() {
               <div className="bg-gradient-to-r from-blue-50 to-green-50 p-6 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-2">Ready to Start?</h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  Join thousands of businesses already using Suplar to streamline their procurement.
+                  Join thousands of businesses and organizations already using Suplar to streamline their procurement.
                 </p>
                 <Button 
                   variant="outline" 

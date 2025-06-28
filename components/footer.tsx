@@ -41,7 +41,7 @@ export function Footer() {
               <span className="text-xl font-bold">Suplar</span>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed mb-4">
-              Africa's leading B2B supply chain platform. We help businesses seamlessly source and procure goods from a vetted network of manufacturers, importers, and distributors.
+              Africa's leading B2B and B2G supply chain management platform. We help businesses and government organizations seamlessly source and procure goods from a vetted network of manufacturers, importers, and distributors.
             </p>
             <div className="flex space-x-4">
               <button 

@@ -294,11 +294,21 @@ export default function TrackOrderPage() {
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center">
                     <Mail className="w-4 h-4 mr-2 text-gray-400" />
-                    <span>info.suplar@gmail.com</span>
+                    <a 
+                      href="mailto:info.suplar@gmail.com" 
+                      className="hover:text-blue-600 transition-colors cursor-pointer"
+                    >
+                      info.suplar@gmail.com
+                    </a>
                   </div>
                   <div className="flex items-center">
                     <Phone className="w-4 h-4 mr-2 text-gray-400" />
-                    <span>+234 (0) 123 456 7890</span>
+                    <a 
+                      href="tel:+2348062249498" 
+                      className="hover:text-blue-600 transition-colors cursor-pointer"
+                    >
+                      +2348062249498
+                    </a>
                   </div>
                 </div>
               </div>
