@@ -85,7 +85,7 @@ export default function AboutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
 
-  const handleContactSubmit = async (e) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
