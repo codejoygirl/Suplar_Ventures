@@ -85,7 +85,7 @@ export default function AboutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
 
-  const handleContactSubmit = async (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     
@@ -265,7 +265,7 @@ export default function AboutPage() {
                   <DialogHeader>
                     <DialogTitle>Contact Us</DialogTitle>
                   </DialogHeader>
-                  <div className="space-y-4">
+                  <form onSubmit={handleContactSubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="about-name">Name *</Label>
@@ -318,11 +318,10 @@ export default function AboutPage() {
                       type="submit" 
                       className="w-full" 
                       disabled={isSubmitting}
-                      onClick={handleContactSubmit}
                     >
                       {isSubmitting ? 'Sending...' : 'Send Message'}
                     </Button>
-                  </div>
+                  </form>
                 </DialogContent>
               </Dialog>
 
