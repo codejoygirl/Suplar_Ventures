@@ -165,8 +165,8 @@ export default function AboutPage() {
               const Icon = value.icon;
               return (
                 <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow">
-                  <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-6 h-6 text-blue-600" />
+                  <div className={`w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4`}>
+                    <Icon className={`w-6 h-6 text-blue-600`} />
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2">{value.title}</h3>
                   <p className="text-sm text-gray-600">{value.description}</p>
