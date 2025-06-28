@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,7 +9,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Search, ShoppingCart, CreditCard, Truck, Package, Users, Globe, CheckCircle, Mail } from 'lucide-react';
-import { sendEmail } from '@/lib/email-service';
 
 const steps = [
   {
@@ -106,31 +105,54 @@ export default function HowItWorksPage() {
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
-      const emailData = {
-        to: 'info.suplar@gmail.com',
-        subject: 'How It Works - Contact Inquiry',
-        message: `
-          Contact Inquiry from How It Works Page:
-          
-          Name: ${contactForm.name}
-          Email: ${contactForm.email}
-          Phone: ${contactForm.phone}
-          Company: ${contactForm.company}
-          
-          Message:
-          ${contactForm.message}
-        `,
-        name: contactForm.name,
-        email: contactForm.email,
-        phone: contactForm.phone,
-        company: contactForm.company
-      };
-      
-      const success = await sendEmail(emailData);
-      
-      if (success) {
+      const formData = new FormData();
+
+
+      formData.append("access_key", "27627ac5-9c82-49bd-8fe0-74298b41d422");
+      formData.append("name", contactForm.name);
+      formData.append("email", contactForm.email);
+      formData.append("phone", contactForm.phone);
+      formData.append("company", contactForm.company);
+      formData.append("message", contactForm.message);
+
+      formData.append("to", "info.suplar@gmail.com");
+
+      formData.append("subject", "How It Works - Contact Inquiry");
+      const formattedMessage = `
+New contact form submission from Suplar Ventures "How It Works" page:
+
+Name: ${contactForm.name}
+Email: ${contactForm.email}
+Phone: ${contactForm.phone}
+Company: ${contactForm.company}
+
+Message:
+${contactForm.message}
+
+---
+This email was sent from the Suplar Ventures "How It Works" contact form.
+Reply directly to this email to respond to the customer.
+      `;
+
+      formData.append("message", formattedMessage);
+
+      const object = Object.fromEntries(formData);
+      const json = JSON.stringify(object);
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: json,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
         alert('Thank you for your inquiry! We\'ll get back to you within 24 hours.');
         setContactForm({ name: '', email: '', phone: '', company: '', message: '' });
         setShowContactModal(false);
@@ -138,6 +160,7 @@ export default function HowItWorksPage() {
         alert('Failed to send message. Please try again.');
       }
     } catch (error) {
+      console.error('Form submission error:', error);
       alert('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -147,7 +170,6 @@ export default function HowItWorksPage() {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
         <div className="text-center mb-16">
           <Badge variant="secondary" className="mb-4 text-sm font-medium">
             How It Works
@@ -156,12 +178,11 @@ export default function HowItWorksPage() {
             Four Simple Steps to Success
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            From sourcing to delivery, our streamlined supply chain management process makes global trade 
+            From sourcing to delivery, our streamlined supply chain management process makes global trade
             accessible to every African business and government organization.
           </p>
         </div>
-        
-        {/* Steps */}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {steps.map((step, index) => {
             const Icon = step.icon;
@@ -171,7 +192,7 @@ export default function HowItWorksPage() {
                   <div className={`w-16 h-16 ${step.bgColor} rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className={`w-8 h-8 ${step.color}`} />
                   </div>
-                  
+
                   <div className="flex items-center mb-4">
                     <span className={`text-2xl font-bold ${step.color} mr-3`}>
                       {step.step}
@@ -180,11 +201,11 @@ export default function HowItWorksPage() {
                       {step.title}
                     </h3>
                   </div>
-                  
+
                   <p className="text-gray-600 leading-relaxed mb-4">
                     {step.description}
                   </p>
-                  
+
                   <ul className="space-y-2">
                     {step.details.map((detail, idx) => (
                       <li key={idx} className="flex items-center text-sm text-gray-600">
@@ -194,8 +215,7 @@ export default function HowItWorksPage() {
                     ))}
                   </ul>
                 </Card>
-                
-                {/* Connection line */}
+
                 {index < steps.length - 1 && (
                   <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-gray-300 to-gray-200 transform -translate-y-1/2 z-10">
                     <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-gray-400 rounded-full"></div>
@@ -206,7 +226,6 @@ export default function HowItWorksPage() {
           })}
         </div>
 
-        {/* Benefits Section */}
         <div className="bg-white rounded-2xl p-8 mb-16">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">
             Why Choose Suplar?
@@ -231,7 +250,6 @@ export default function HowItWorksPage() {
           </div>
         </div>
 
-        {/* CTA Section */}
         <div className="bg-gradient-to-r from-blue-600 to-green-600 rounded-2xl p-8 text-center text-white">
           <h2 className="text-3xl font-bold mb-4">
             Ready to Get Started?
@@ -240,8 +258,8 @@ export default function HowItWorksPage() {
             Join thousands of businesses and organizations already transforming their procurement process.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-white text-blue-600 hover:bg-gray-100"
               onClick={() => window.location.href = '/products'}
             >
@@ -249,9 +267,9 @@ export default function HowItWorksPage() {
             </Button>
             <Dialog open={showContactModal} onOpenChange={setShowContactModal}>
               <DialogTrigger asChild>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
+                <Button
+                  size="lg"
+                  variant="outline"
                   className="border-white text-white hover:bg-white hover:text-blue-600"
                 >
                   <Mail className="w-4 h-4 mr-2" />
@@ -269,7 +287,7 @@ export default function HowItWorksPage() {
                       <Input
                         id="contact-name"
                         value={contactForm.name}
-                        onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                        onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                         required
                       />
                     </div>
@@ -279,7 +297,7 @@ export default function HowItWorksPage() {
                         id="contact-email"
                         type="email"
                         value={contactForm.email}
-                        onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                        onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
                         required
                       />
                     </div>
@@ -290,7 +308,7 @@ export default function HowItWorksPage() {
                       <Input
                         id="contact-phone"
                         value={contactForm.phone}
-                        onChange={(e) => setContactForm({...contactForm, phone: e.target.value})}
+                        onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                       />
                     </div>
                     <div>
@@ -298,7 +316,7 @@ export default function HowItWorksPage() {
                       <Input
                         id="contact-company"
                         value={contactForm.company}
-                        onChange={(e) => setContactForm({...contactForm, company: e.target.value})}
+                        onChange={(e) => setContactForm({ ...contactForm, company: e.target.value })}
                       />
                     </div>
                   </div>
@@ -307,7 +325,7 @@ export default function HowItWorksPage() {
                     <Textarea
                       id="contact-message"
                       value={contactForm.message}
-                      onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                      onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                       required
                     />
                   </div>

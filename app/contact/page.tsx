@@ -8,11 +8,11 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Clock, 
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
   MessageCircle,
   Linkedin,
   Twitter,
@@ -40,13 +40,13 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       const formData = new FormData();
-      
-      
-      formData.append("access_key", "2e9747df-fadd-4a49-a3de-fc9547a3e05c"); 
-      
+
+
+      formData.append("access_key", "27627ac5-9c82-49bd-8fe0-74298b41d422");
+
       // Add form fields
       formData.append("name", contactForm.name);
       formData.append("email", contactForm.email);
@@ -55,13 +55,13 @@ export default function ContactPage() {
       formData.append("subject", contactForm.subject);
       formData.append("category", contactForm.category);
       formData.append("message", contactForm.message);
-      
+
       // Add custom recipient email
       formData.append("to", "info.suplar@gmail.com");
-      
+
       // Add custom subject line
       formData.append("subject", `Contact Form: ${contactForm.subject} - ${contactForm.category}`);
-      
+
       // Create formatted message
       const formattedMessage = `
 New contact form submission from Suplar Ventures website:
@@ -80,7 +80,7 @@ ${contactForm.message}
 This email was sent from the Suplar Ventures contact form.
 Reply directly to this email to respond to the customer.
       `;
-      
+
       formData.append("message", formattedMessage);
 
       const object = Object.fromEntries(formData);
@@ -100,7 +100,7 @@ Reply directly to this email to respond to the customer.
       if (result.success) {
         alert('Thank you for contacting Suplar Ventures! We have received your message and will get back to you within 24 hours.');
         setContactForm({
-          name: '', email: '', phone: '', company: '', 
+          name: '', email: '', phone: '', company: '',
           subject: '', category: '', message: ''
         });
       } else {
@@ -153,33 +153,33 @@ Reply directly to this email to respond to the customer.
   ];
 
   const socialLinks = [
-    { 
-      icon: Linkedin, 
-      name: 'LinkedIn', 
+    {
+      icon: Linkedin,
+      name: 'LinkedIn',
       href: '#',
       action: () => alert('LinkedIn page coming soon!')
     },
-    { 
-      icon: Twitter, 
-      name: 'Twitter', 
+    {
+      icon: Twitter,
+      name: 'Twitter',
       href: '#',
       action: () => alert('Twitter page coming soon!')
     },
-    { 
-      icon: Instagram, 
-      name: 'Instagram', 
+    {
+      icon: Instagram,
+      name: 'Instagram',
       href: 'https://www.instagram.com/suplar_ventures?igsh=OTRoNTExcGI2OWZt&utm_source=qr',
       action: () => window.open('https://www.instagram.com/suplar_ventures?igsh=OTRoNTExcGI2OWZt&utm_source=qr', '_blank')
     },
-    { 
-      icon: Facebook, 
-      name: 'Facebook', 
+    {
+      icon: Facebook,
+      name: 'Facebook',
       href: 'https://www.facebook.com/share/16mKMGbGnp/?mibextid=wwXIfr',
       action: () => window.open('https://www.facebook.com/share/16mKMGbGnp/?mibextid=wwXIfr', '_blank')
     },
-    { 
-      icon: MessageCircle, 
-      name: 'WhatsApp', 
+    {
+      icon: MessageCircle,
+      name: 'WhatsApp',
       href: 'https://wa.me/2349036735450',
       action: () => window.open('https://wa.me/2349036735450', '_blank')
     }
@@ -195,7 +195,7 @@ Reply directly to this email to respond to the customer.
             Get in Touch
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Have questions about our platform? Need help with an order? 
+            Have questions about our platform? Need help with an order?
             We&apos;re here to help and would love to hear from you.
           </p>
         </div>
@@ -299,8 +299,8 @@ Reply directly to this email to respond to the customer.
                     />
                   </div>
 
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
                     disabled={isSubmitting}
                   >
@@ -329,7 +329,7 @@ Reply directly to this email to respond to the customer.
                       <div className="flex-1">
                         <h3 className="font-semibold text-gray-900">{info.title}</h3>
                         <button
-                          onClick={info.action || (() => {})}
+                          onClick={info.action || (() => { })}
                           className={`text-gray-900 hover:text-blue-600 transition-colors ${info.action ? 'cursor-pointer' : 'cursor-default'}`}
                           disabled={!info.action}
                         >
@@ -373,22 +373,22 @@ Reply directly to this email to respond to the customer.
               <CardContent className="p-6">
                 <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
                 <div className="space-y-3">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full justify-start"
                     onClick={() => window.location.href = '/track-order'}
                   >
                     Track an Order
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full justify-start"
                     onClick={() => window.location.href = '/faq'}
                   >
                     View FAQ
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full justify-start"
                     onClick={() => window.location.href = '/products'}
                   >
@@ -406,7 +406,7 @@ Reply directly to this email to respond to the customer.
             <Clock className="w-8 h-8 text-blue-600 mx-auto mb-3" />
             <h3 className="font-semibold text-gray-900 mb-2">Response Time</h3>
             <p className="text-gray-600">
-              We typically respond to all inquiries within 24 hours during business days. 
+              We typically respond to all inquiries within 24 hours during business days.
               For urgent matters, please call us directly at +2348062249498.
             </p>
           </CardContent>
