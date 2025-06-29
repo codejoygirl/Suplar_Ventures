@@ -80,13 +80,12 @@ export default function AdminDashboard() {
     const report = {
       reportDate: new Date().toISOString().split('T')[0],
       period: selectedPeriod,
-      businessAge: 'Started May 2024',
       metrics: mockAnalytics.overview,
       growth: mockAnalytics.monthlyData,
       topProducts: mockAnalytics.topProducts,
       userDistribution: mockAnalytics.usersByCountry,
       keyHighlights: [
-        'Early traction with 15 users since May 2024',
+        'Early traction with 15 users in first quarter',
         'Strong conversion rate of 33.3% (5 transactions from 15 users)',
         'Growing supplier network with 10 active partners',
         'Primary market: Nigeria (60%) with China presence (7%)',
@@ -123,7 +122,7 @@ export default function AdminDashboard() {
               <Shield className="w-8 h-8 text-blue-600" />
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Suplar Admin</h1>
-                <p className="text-sm text-gray-500">Analytics Dashboard - Started May 2024</p>
+                <p className="text-sm text-gray-500">Analytics Dashboard</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -297,9 +296,9 @@ export default function AdminDashboard() {
                     <p className="text-xs text-gray-500">Strong monetization</p>
                   </div>
                   <div className="text-center p-4 bg-purple-50 rounded-lg">
-                    <p className="text-2xl font-bold text-purple-600">Jun 2024</p>
-                    <p className="text-sm text-gray-600">Started May 2024</p>
-                    <p className="text-xs text-gray-500">Growing momentum</p>
+                    <p className="text-2xl font-bold text-purple-600">Growing</p>
+                    <p className="text-sm text-gray-600">Platform Status</p>
+                    <p className="text-xs text-gray-500">Strong momentum</p>
                   </div>
                 </div>
               </CardContent>
@@ -367,12 +366,12 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="bg-blue-50 p-6 rounded-lg">
-                  <h3 className="font-semibold text-lg mb-4">Business Highlights (Started May 2024)</h3>
+                  <h3 className="font-semibold text-lg mb-4">Business Highlights</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <h4 className="font-medium mb-2">Growth Metrics:</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• 15 users acquired since launch</li>
+                        <li>• 15 users acquired in first quarter</li>
                         <li>• 33.3% conversion rate (industry leading)</li>
                         <li>• $26.00 average transaction value</li>
                         <li>• 150% month-over-month growth</li>
