@@ -101,7 +101,6 @@ export default function AdminDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState('30d');
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareableLink, setShareableLink] = useState('');
-  const [exportFormat, setExportFormat] = useState<'pdf' | 'csv'>('pdf');
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -127,7 +126,7 @@ export default function AdminDashboard() {
     alert('Link copied to clipboard!');
   };
 
-  const exportReport = (format: 'pdf' | 'csv') => {
+  const generatePDFReport = () => {
     const report = {
       reportDate: new Date().toISOString().split('T')[0],
       period: selectedPeriod,
@@ -147,9 +146,8 @@ export default function AdminDashboard() {
       ]
     };
 
-    if (format === 'pdf') {
-      // Generate comprehensive PDF-like content
-      const pdfContent = `
+    // Generate comprehensive PDF-like content
+    const pdfContent = `
 SUPLAR VENTURES - BUSINESS REPORT
 Generated: ${report.reportDate}
 Period: ${report.period}
@@ -247,71 +245,93 @@ Address: 9 Omojolowo Street, Hotel Bus Stop, Igando
 ---
 This report contains forward-looking statements. Past performance does not guarantee future results.
 All financial data is preliminary and subject to audit.
-      `;
-      
-      const blob = new Blob([pdfContent], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `suplar-business-report-${report.reportDate}.txt`;
-      a.click();
-      URL.revokeObjectURL(url);
-    } else {
-      // Generate comprehensive CSV
-      const csvRows = [
-        ['SUPLAR VENTURES BUSINESS REPORT'],
-        ['Generated', report.reportDate],
-        ['Period', report.period],
-        [''],
-        ['EXECUTIVE SUMMARY'],
-        ['Metric', 'Value'],
-        ['Total Users', report.metrics.totalUsers],
-        ['Total Transactions', report.metrics.totalTransactions],
-        ['Total Revenue', `$${report.metrics.totalRevenue.toFixed(2)}`],
-        ['Active Suppliers', report.metrics.activeSuppliers],
-        ['Conversion Rate', `${report.metrics.conversionRate}%`],
-        ['Monthly Growth', `${report.metrics.monthlyGrowth}%`],
-        [''],
-        ['MONTHLY GROWTH DATA'],
-        ['Month', 'Users', 'Transactions', 'Revenue'],
-        ...report.growth.map(month => [month.month, month.users, month.transactions, `$${month.revenue.toFixed(2)}`]),
-        [''],
-        ['TOP PRODUCTS'],
-        ['Product', 'Sales', 'Revenue'],
-        ...report.topProducts.map(product => [product.name, product.sales, `$${product.revenue.toFixed(2)}`]),
-        [''],
-        ['GEOGRAPHIC DISTRIBUTION'],
-        ['Country', 'Users', 'Percentage'],
-        ...report.userDistribution.map(country => [country.country, country.users, `${country.percentage}%`]),
-        [''],
-        ['RECENT TRANSACTIONS'],
-        ['Date', 'Customer', 'Product', 'Amount'],
-        ...report.recentTransactions.map(t => [t.date, t.customer, t.product, `$${t.amount.toFixed(2)}`]),
-        [''],
-        ['KEY HIGHLIGHTS'],
-        ['Highlight'],
-        ...report.keyHighlights.map(highlight => [highlight]),
-        [''],
-        ['FINANCIAL METRICS'],
-        ['Metric', 'Value'],
-        ['Average Transaction Value', `$${(report.metrics.totalRevenue / report.metrics.totalTransactions).toFixed(2)}`],
-        ['Revenue per User', `$${(report.metrics.totalRevenue / report.metrics.totalUsers).toFixed(2)}`],
-        ['Customer Acquisition Cost', '$2.50'],
-        ['Customer Lifetime Value', '$28.50']
-      ];
-      
-      const csvContent = csvRows.map(row => row.join(',')).join('\n');
-      
-      const blob = new Blob([csvContent], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `suplar-business-report-${report.reportDate}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
+    `;
     
-    alert(`${format.toUpperCase()} report exported successfully! The file contains comprehensive business metrics, growth analysis, and investor-ready data.`);
+    const blob = new Blob([pdfContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `suplar-business-report-${report.reportDate}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    alert('PDF report downloaded successfully! The file contains comprehensive business metrics, growth analysis, and investor-ready data.');
+  };
+
+  const generateCSVReport = () => {
+    const report = {
+      reportDate: new Date().toISOString().split('T')[0],
+      period: selectedPeriod,
+      metrics: mockAnalytics.overview,
+      growth: mockAnalytics.monthlyData,
+      topProducts: mockAnalytics.topProducts,
+      userDistribution: mockAnalytics.usersByCountry,
+      recentTransactions: mockAnalytics.recentTransactions,
+      keyHighlights: [
+        'Strong early traction with 18 users in Q2 2025',
+        'Excellent conversion rate of 38.9% (7 transactions from 18 users)',
+        'Growing supplier network with 12 active partners',
+        'Strong Nigeria market dominance (83.3%) with China presence',
+        'Average transaction value: $14.29',
+        'Month-over-month growth: 180%',
+        'Key customers include healthcare centers and educational institutions'
+      ]
+    };
+
+    // Generate comprehensive CSV
+    const csvRows = [
+      ['SUPLAR VENTURES BUSINESS REPORT'],
+      ['Generated', report.reportDate],
+      ['Period', report.period],
+      [''],
+      ['EXECUTIVE SUMMARY'],
+      ['Metric', 'Value'],
+      ['Total Users', report.metrics.totalUsers],
+      ['Total Transactions', report.metrics.totalTransactions],
+      ['Total Revenue', `$${report.metrics.totalRevenue.toFixed(2)}`],
+      ['Active Suppliers', report.metrics.activeSuppliers],
+      ['Conversion Rate', `${report.metrics.conversionRate}%`],
+      ['Monthly Growth', `${report.metrics.monthlyGrowth}%`],
+      [''],
+      ['MONTHLY GROWTH DATA'],
+      ['Month', 'Users', 'Transactions', 'Revenue'],
+      ...report.growth.map(month => [month.month, month.users, month.transactions, `$${month.revenue.toFixed(2)}`]),
+      [''],
+      ['TOP PRODUCTS'],
+      ['Product', 'Sales', 'Revenue'],
+      ...report.topProducts.map(product => [product.name, product.sales, `$${product.revenue.toFixed(2)}`]),
+      [''],
+      ['GEOGRAPHIC DISTRIBUTION'],
+      ['Country', 'Users', 'Percentage'],
+      ...report.userDistribution.map(country => [country.country, country.users, `${country.percentage}%`]),
+      [''],
+      ['RECENT TRANSACTIONS'],
+      ['Date', 'Customer', 'Product', 'Amount'],
+      ...report.recentTransactions.map(t => [t.date, t.customer, t.product, `$${t.amount.toFixed(2)}`]),
+      [''],
+      ['KEY HIGHLIGHTS'],
+      ['Highlight'],
+      ...report.keyHighlights.map(highlight => [highlight]),
+      [''],
+      ['FINANCIAL METRICS'],
+      ['Metric', 'Value'],
+      ['Average Transaction Value', `$${(report.metrics.totalRevenue / report.metrics.totalTransactions).toFixed(2)}`],
+      ['Revenue per User', `$${(report.metrics.totalRevenue / report.metrics.totalUsers).toFixed(2)}`],
+      ['Customer Acquisition Cost', '$2.50'],
+      ['Customer Lifetime Value', '$28.50']
+    ];
+    
+    const csvContent = csvRows.map(row => row.join(',')).join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `suplar-business-report-${report.reportDate}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    alert('CSV report downloaded successfully! The file contains comprehensive business metrics, growth analysis, and investor-ready data.');
   };
 
   if (!isAuthenticated) {
@@ -332,18 +352,13 @@ All financial data is preliminary and subject to audit.
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Select value={exportFormat} onValueChange={(value: 'pdf' | 'csv') => setExportFormat(value)}>
-                <SelectTrigger className="w-24">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pdf">PDF</SelectItem>
-                  <SelectItem value="csv">CSV</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button variant="outline" onClick={() => exportReport(exportFormat)}>
+              <Button variant="outline" onClick={generatePDFReport}>
+                <FileText className="w-4 h-4 mr-2" />
+                Export PDF
+              </Button>
+              <Button variant="outline" onClick={generateCSVReport}>
                 <Download className="w-4 h-4 mr-2" />
-                Export {exportFormat.toUpperCase()}
+                Export CSV
               </Button>
               <Button variant="outline" onClick={generateShareableLink}>
                 <Share2 className="w-4 h-4 mr-2" />
@@ -628,11 +643,11 @@ All financial data is preliminary and subject to audit.
                     <div className="space-y-4">
                       <h4 className="font-medium">Download Reports:</h4>
                       <div className="flex space-x-2">
-                        <Button onClick={() => exportReport('pdf')} variant="outline">
+                        <Button onClick={generatePDFReport} variant="outline">
                           <FileText className="w-4 h-4 mr-2" />
                           Download PDF
                         </Button>
-                        <Button onClick={() => exportReport('csv')} variant="outline">
+                        <Button onClick={generateCSVReport} variant="outline">
                           <Download className="w-4 h-4 mr-2" />
                           Download CSV
                         </Button>
