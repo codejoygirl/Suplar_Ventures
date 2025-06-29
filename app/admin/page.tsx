@@ -31,7 +31,7 @@ const mockAnalytics = {
   overview: {
     totalUsers: 15,
     totalTransactions: 5,
-    totalRevenue: 200.00,
+    totalRevenue: 130.00,
     activeSuppliers: 10,
     monthlyGrowth: 150.0, // Higher growth rate for early stage (from 2 to 5 transactions)
     conversionRate: 33.3 // 5 transactions from 15 users
@@ -44,21 +44,18 @@ const mockAnalytics = {
     { id: 5, type: 'inquiry', user: 'Ahmed Kone', subject: 'Medical Equipment Inquiry', timestamp: '2024-06-10 10:30' }
   ],
   monthlyData: [
-    { month: 'May 2024', users: 8, transactions: 2, revenue: 70.49 },
-    { month: 'Jun 2024', users: 15, transactions: 5, revenue: 200.00 }
+    { month: 'May 2024', users: 6, transactions: 2, revenue: 70.49 },
+    { month: 'Jun 2024', users: 15, transactions: 5, revenue: 130.00 }
   ],
   topProducts: [
-    { name: 'Industrial Cable Set', sales: 1, revenue: 45.50 },
-    { name: 'Digital Blood Pressure Monitor', sales: 1, revenue: 89.99 },
-    { name: 'Surgical Gloves (Box)', sales: 1, revenue: 24.99 },
-    { name: 'LED Light Bulbs', sales: 1, revenue: 32.99 },
-    { name: 'Office Supplies Bundle', sales: 1, revenue: 6.53 }
+    { name: 'Digital Blood Pressure Monitor', sales: 2, revenue: 89.99 },
+    { name: 'Industrial Cable Set', sales: 1, revenue: 45.50 }
   ],
   usersByCountry: [
     { country: 'Nigeria', users: 9, percentage: 60.0 },
-    { country: 'China', users: 6, percentage: 40.0 },
-    { country: 'Kenya', users: 0, percentage: 0.0 },
-    { country: 'Ghana', users: 0, percentage: 0.0 },
+    { country: 'China', users: 1, percentage: 6.7 },
+    { country: 'Kenya', users: 3, percentage: 20.0 },
+    { country: 'Ghana', users: 2, percentage: 13.3 },
     { country: 'Others', users: 0, percentage: 0.0 }
   ]
 };
@@ -92,8 +89,8 @@ export default function AdminDashboard() {
         'Early traction with 15 users in 2 months',
         'Strong conversion rate of 33.3% (5 transactions from 15 users)',
         'Growing supplier network with 10 active partners',
-        'Focus markets: Nigeria (60%) and China (40%)',
-        'Average transaction value: $40.00',
+        'Focus markets: Nigeria (60%) and China (7%)',
+        'Average transaction value: $26.00',
         'Month-over-month growth: 150%'
       ]
     };
@@ -152,7 +149,7 @@ export default function AdminDashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Users</p>
                   <p className="text-3xl font-bold text-gray-900">{mockAnalytics.overview.totalUsers}</p>
-                  <p className="text-sm text-green-600">+87% this month</p>
+                  <p className="text-sm text-green-600">+150% this month</p>
                 </div>
                 <Users className="w-8 h-8 text-blue-600" />
               </div>
@@ -178,7 +175,7 @@ export default function AdminDashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Revenue</p>
                   <p className="text-3xl font-bold text-gray-900">${mockAnalytics.overview.totalRevenue.toFixed(2)}</p>
-                  <p className="text-sm text-green-600">+184% this month</p>
+                  <p className="text-sm text-green-600">+85% this month</p>
                 </div>
                 <DollarSign className="w-8 h-8 text-purple-600" />
               </div>
@@ -377,7 +374,7 @@ export default function AdminDashboard() {
                       <ul className="text-sm text-gray-600 space-y-1">
                         <li>• 15 users acquired in 2 months</li>
                         <li>• 33.3% conversion rate (industry avg: 2-3%)</li>
-                        <li>• $40.00 average transaction value</li>
+                        <li>• $26.00 average transaction value</li>
                         <li>• 150% month-over-month growth</li>
                       </ul>
                     </div>
@@ -385,7 +382,7 @@ export default function AdminDashboard() {
                       <h4 className="font-medium mb-2">Market Position:</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
                         <li>• Strong Nigeria market presence (60%)</li>
-                        <li>• Growing China supplier network (40%)</li>
+                        <li>• Growing China supplier network (7%)</li>
                         <li>• 10 active verified suppliers</li>
                         <li>• Focus on B2B & B2G segments</li>
                       </ul>
