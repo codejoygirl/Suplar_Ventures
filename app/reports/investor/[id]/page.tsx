@@ -284,3 +284,12 @@ export default function InvestorReport() {
     </div>
   );
 }
+
+// Required for static export with dynamic routes
+export async function generateStaticParams() {
+  return [
+    { id: 'sample-report-id' },
+    { id: 'demo-report' },
+    { id: 'investor-report-2025' }
+  ];
+}
