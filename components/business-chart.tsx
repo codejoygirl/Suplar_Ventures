@@ -85,9 +85,6 @@ export function BusinessChart({ data, type, dataKey, color, height = 300 }: Busi
             />
           </AreaChart>
         );
-      
-      default:
-        return null;
     }
   };
 
