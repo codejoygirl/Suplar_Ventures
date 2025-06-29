@@ -26,37 +26,33 @@ import {
 } from 'lucide-react';
 import { useAdminStore } from '@/lib/admin-store';
 
-// Realistic analytics data for a 2-month-old business (started May 2024)
+// Realistic analytics data for a 2-month-old business (May-June 2024)
 const mockAnalytics = {
   overview: {
     totalUsers: 15,
-    totalTransactions: 8,
-    totalRevenue: 2847.50,
+    totalTransactions: 5,
+    totalRevenue: 200.00,
     activeSuppliers: 10,
-    monthlyGrowth: 67.0, // Higher growth rate for early stage
-    conversionRate: 53.3 // 8 transactions from 15 users
+    monthlyGrowth: 150.0, // Higher growth rate for early stage (from 2 to 5 transactions)
+    conversionRate: 33.3 // 5 transactions from 15 users
   },
   recentActivity: [
-    { id: 1, type: 'signup', user: 'Dr. Adebayo Ogundimu', company: 'Lagos Medical Center', timestamp: '2025-01-15 14:30' },
-    { id: 2, type: 'transaction', user: 'Fatima Al-Hassan', amount: '$89.99', product: 'Digital Blood Pressure Monitor', timestamp: '2025-01-15 13:45' },
-    { id: 3, type: 'signup', user: 'James Ochieng', company: 'Nairobi Manufacturing Ltd', timestamp: '2025-01-14 12:20' },
-    { id: 4, type: 'transaction', user: 'Sarah Mensah', amount: '$245.99', product: 'Ergonomic Office Chair', timestamp: '2025-01-14 11:15' },
-    { id: 5, type: 'inquiry', user: 'Ahmed Kone', subject: 'Medical Equipment Inquiry', timestamp: '2025-01-13 10:30' }
+    { id: 1, type: 'signup', user: 'Dr. Adebayo Ogundimu', company: 'Lagos Medical Center', timestamp: '2024-06-28 14:30' },
+    { id: 2, type: 'transaction', user: 'Fatima Al-Hassan', amount: '$45.50', product: 'Industrial Cable Set', timestamp: '2024-06-25 13:45' },
+    { id: 3, type: 'signup', user: 'James Ochieng', company: 'Nairobi Manufacturing Ltd', timestamp: '2024-06-20 12:20' },
+    { id: 4, type: 'transaction', user: 'Sarah Mensah', amount: '$24.99', product: 'Surgical Gloves', timestamp: '2024-06-15 11:15' },
+    { id: 5, type: 'inquiry', user: 'Ahmed Kone', subject: 'Medical Equipment Inquiry', timestamp: '2024-06-10 10:30' }
   ],
   monthlyData: [
-    { month: 'May 2024', users: 3, transactions: 1, revenue: 89.99 },
-    { month: 'Jun 2024', users: 5, transactions: 2, revenue: 334.98 },
-    { month: 'Jul 2024', users: 8, transactions: 3, revenue: 579.97 },
-    { month: 'Aug 2024', users: 10, transactions: 4, revenue: 824.96 },
-    { month: 'Sep 2024', users: 12, transactions: 6, revenue: 1247.94 },
-    { month: 'Oct 2024', users: 15, transactions: 8, revenue: 2847.50 }
+    { month: 'May 2024', users: 8, transactions: 2, revenue: 70.49 },
+    { month: 'Jun 2024', users: 15, transactions: 5, revenue: 200.00 }
   ],
   topProducts: [
-    { name: 'Digital Blood Pressure Monitor', sales: 3, revenue: 269.97 },
-    { name: 'Ergonomic Office Chair', sales: 2, revenue: 491.98 },
-    { name: 'Industrial Cable Set', sales: 2, revenue: 91.00 },
+    { name: 'Industrial Cable Set', sales: 1, revenue: 45.50 },
+    { name: 'Digital Blood Pressure Monitor', sales: 1, revenue: 89.99 },
     { name: 'Surgical Gloves (Box)', sales: 1, revenue: 24.99 },
-    { name: 'Laboratory Microscope', sales: 1, revenue: 1299.99 }
+    { name: 'LED Light Bulbs', sales: 1, revenue: 32.99 },
+    { name: 'Office Supplies Bundle', sales: 1, revenue: 6.53 }
   ],
   usersByCountry: [
     { country: 'Nigeria', users: 9, percentage: 60.0 },
@@ -87,18 +83,18 @@ export default function AdminDashboard() {
     const report = {
       reportDate: new Date().toISOString().split('T')[0],
       period: selectedPeriod,
-      businessAge: '6 months (Started May 2024)',
+      businessAge: '2 months (Started May 2024)',
       metrics: mockAnalytics.overview,
       growth: mockAnalytics.monthlyData,
       topProducts: mockAnalytics.topProducts,
       userDistribution: mockAnalytics.usersByCountry,
       keyHighlights: [
-        'Strong early traction with 15 users in 6 months',
-        'High conversion rate of 53.3% (8 transactions from 15 users)',
+        'Early traction with 15 users in 2 months',
+        'Strong conversion rate of 33.3% (5 transactions from 15 users)',
         'Growing supplier network with 10 active partners',
         'Focus markets: Nigeria (60%) and China (40%)',
-        'Average transaction value: $355.94',
-        'Month-over-month growth: 67%'
+        'Average transaction value: $40.00',
+        'Month-over-month growth: 150%'
       ]
     };
     
@@ -113,7 +109,7 @@ export default function AdminDashboard() {
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
     
-    alert('Investor report generated! This shows realistic early-stage metrics for a 6-month-old startup.');
+    alert('Investor report generated! This shows realistic early-stage metrics for a 2-month-old startup.');
   };
 
   if (!isAuthenticated) {
@@ -130,7 +126,7 @@ export default function AdminDashboard() {
               <Shield className="w-8 h-8 text-blue-600" />
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Suplar Admin</h1>
-                <p className="text-sm text-gray-500">Analytics Dashboard - 6 Months in Business</p>
+                <p className="text-sm text-gray-500">Analytics Dashboard - 2 Months in Business</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -156,7 +152,7 @@ export default function AdminDashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Users</p>
                   <p className="text-3xl font-bold text-gray-900">{mockAnalytics.overview.totalUsers}</p>
-                  <p className="text-sm text-green-600">+{mockAnalytics.overview.monthlyGrowth}% this month</p>
+                  <p className="text-sm text-green-600">+87% this month</p>
                 </div>
                 <Users className="w-8 h-8 text-blue-600" />
               </div>
@@ -169,7 +165,7 @@ export default function AdminDashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Transactions</p>
                   <p className="text-3xl font-bold text-gray-900">{mockAnalytics.overview.totalTransactions}</p>
-                  <p className="text-sm text-green-600">+33% this month</p>
+                  <p className="text-sm text-green-600">+150% this month</p>
                 </div>
                 <ShoppingCart className="w-8 h-8 text-green-600" />
               </div>
@@ -181,8 +177,8 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-                  <p className="text-3xl font-bold text-gray-900">${mockAnalytics.overview.totalRevenue.toLocaleString()}</p>
-                  <p className="text-sm text-green-600">+128% this month</p>
+                  <p className="text-3xl font-bold text-gray-900">${mockAnalytics.overview.totalRevenue.toFixed(2)}</p>
+                  <p className="text-sm text-green-600">+184% this month</p>
                 </div>
                 <DollarSign className="w-8 h-8 text-purple-600" />
               </div>
@@ -219,7 +215,7 @@ export default function AdminDashboard() {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <TrendingUp className="w-5 h-5 mr-2" />
-                    Monthly Growth (Since May 2024)
+                    Monthly Growth (May - June 2024)
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -230,7 +226,7 @@ export default function AdminDashboard() {
                         <div className="flex items-center space-x-4">
                           <span className="text-sm text-gray-600">{month.users} users</span>
                           <span className="text-sm text-gray-600">{month.transactions} transactions</span>
-                          <span className="text-sm font-medium">${month.revenue.toLocaleString()}</span>
+                          <span className="text-sm font-medium">${month.revenue.toFixed(2)}</span>
                         </div>
                       </div>
                     ))}
@@ -252,9 +248,9 @@ export default function AdminDashboard() {
                       <div key={index} className="flex items-center justify-between">
                         <div>
                           <p className="font-medium text-sm">{product.name}</p>
-                          <p className="text-xs text-gray-500">{product.sales} sales</p>
+                          <p className="text-xs text-gray-500">{product.sales} sale{product.sales > 1 ? 's' : ''}</p>
                         </div>
-                        <span className="font-medium">${product.revenue.toLocaleString()}</span>
+                        <span className="font-medium">${product.revenue.toFixed(2)}</span>
                       </div>
                     ))}
                   </div>
@@ -296,15 +292,15 @@ export default function AdminDashboard() {
                   <div className="text-center p-4 bg-blue-50 rounded-lg">
                     <p className="text-2xl font-bold text-blue-600">{mockAnalytics.overview.conversionRate}%</p>
                     <p className="text-sm text-gray-600">Conversion Rate</p>
-                    <p className="text-xs text-gray-500">8 transactions from 15 users</p>
+                    <p className="text-xs text-gray-500">5 transactions from 15 users</p>
                   </div>
                   <div className="text-center p-4 bg-green-50 rounded-lg">
                     <p className="text-2xl font-bold text-green-600">${(mockAnalytics.overview.totalRevenue / mockAnalytics.overview.totalTransactions).toFixed(0)}</p>
                     <p className="text-sm text-gray-600">Avg Transaction Value</p>
-                    <p className="text-xs text-gray-500">Strong early monetization</p>
+                    <p className="text-xs text-gray-500">Early monetization</p>
                   </div>
                   <div className="text-center p-4 bg-purple-50 rounded-lg">
-                    <p className="text-2xl font-bold text-purple-600">6</p>
+                    <p className="text-2xl font-bold text-purple-600">2</p>
                     <p className="text-sm text-gray-600">Months in Business</p>
                     <p className="text-xs text-gray-500">Started May 2024</p>
                   </div>
@@ -374,15 +370,15 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="bg-blue-50 p-6 rounded-lg">
-                  <h3 className="font-semibold text-lg mb-4">Early Stage Highlights</h3>
+                  <h3 className="font-semibold text-lg mb-4">Early Stage Highlights (2 Months)</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <h4 className="font-medium mb-2">Traction Metrics:</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• 15 users acquired in 6 months</li>
-                        <li>• 53.3% conversion rate (industry avg: 2-3%)</li>
-                        <li>• $355.94 average transaction value</li>
-                        <li>• 67% month-over-month growth</li>
+                        <li>• 15 users acquired in 2 months</li>
+                        <li>• 33.3% conversion rate (industry avg: 2-3%)</li>
+                        <li>• $40.00 average transaction value</li>
+                        <li>• 150% month-over-month growth</li>
                       </ul>
                     </div>
                     <div>
@@ -407,8 +403,8 @@ export default function AdminDashboard() {
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h4 className="font-semibold mb-4">Report Includes:</h4>
                   <ul className="space-y-2 text-sm text-gray-600">
-                    <li>• Early-stage user acquisition metrics (6 months)</li>
-                    <li>• High conversion rate analysis (53.3%)</li>
+                    <li>• Early-stage user acquisition metrics (2 months)</li>
+                    <li>• High conversion rate analysis (33.3%)</li>
                     <li>• Geographic distribution (Nigeria & China focus)</li>
                     <li>• Product performance and revenue breakdown</li>
                     <li>• Supplier network growth and partnerships</li>
