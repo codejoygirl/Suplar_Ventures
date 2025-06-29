@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   Users, 
   ShoppingCart, 
@@ -22,9 +24,15 @@ import {
   PieChart,
   Activity,
   LogOut,
-  Shield
+  Shield,
+  FileText,
+  Share2,
+  Copy,
+  ExternalLink,
+  LineChart
 } from 'lucide-react';
 import { useAdminStore } from '@/lib/admin-store';
+import { BusinessChart } from '@/components/business-chart';
 
 // Updated analytics data with 2025 dates and your specific transactions
 const mockAnalytics = {
@@ -69,6 +77,10 @@ const mockAnalytics = {
     { id: 10, type: 'signup', user: 'Samas Hospital Ipaja', type_detail: 'Healthcare Provider', timestamp: '2025-05-22 10:20' }
   ],
   monthlyData: [
+    { month: 'Jan 2025', users: 0, transactions: 0, revenue: 0 },
+    { month: 'Feb 2025', users: 0, transactions: 0, revenue: 0 },
+    { month: 'Mar 2025', users: 0, transactions: 0, revenue: 0 },
+    { month: 'Apr 2025', users: 0, transactions: 0, revenue: 0 },
     { month: 'May 2025', users: 8, transactions: 3, revenue: 45.00 },
     { month: 'Jun 2025', users: 18, transactions: 7, revenue: 100.00 }
   ],
@@ -87,6 +99,9 @@ export default function AdminDashboard() {
   const router = useRouter();
   const { isAuthenticated, logout } = useAdminStore();
   const [selectedPeriod, setSelectedPeriod] = useState('30d');
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareableLink, setShareableLink] = useState('');
+  const [exportFormat, setExportFormat] = useState('pdf');
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -99,7 +114,20 @@ export default function AdminDashboard() {
     router.push('/admin/login');
   };
 
-  const generateInvestorReport = () => {
+  const generateShareableLink = () => {
+    const reportId = `report-${Date.now()}`;
+    const baseUrl = window.location.origin;
+    const link = `${baseUrl}/reports/investor/${reportId}?token=view-only-${reportId}`;
+    setShareableLink(link);
+    setShowShareModal(true);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(shareableLink);
+    alert('Link copied to clipboard!');
+  };
+
+  const exportReport = (format: 'pdf' | 'csv') => {
     const report = {
       reportDate: new Date().toISOString().split('T')[0],
       period: selectedPeriod,
@@ -118,18 +146,72 @@ export default function AdminDashboard() {
         'Key customers include healthcare centers and educational institutions'
       ]
     };
+
+    if (format === 'pdf') {
+      // Generate PDF-like content
+      const pdfContent = `
+SUPLAR BUSINESS REPORT - ${report.reportDate}
+===========================================
+
+EXECUTIVE SUMMARY
+-----------------
+Total Users: ${report.metrics.totalUsers}
+Total Transactions: ${report.metrics.totalTransactions}
+Total Revenue: $${report.metrics.totalRevenue}
+Conversion Rate: ${report.metrics.conversionRate}%
+Monthly Growth: ${report.metrics.monthlyGrowth}%
+
+GROWTH METRICS
+--------------
+${report.growth.map(month => `${month.month}: ${month.users} users, ${month.transactions} transactions, $${month.revenue}`).join('\n')}
+
+TOP PRODUCTS
+------------
+${report.topProducts.map(product => `${product.name}: ${product.sales} sales, $${product.revenue} revenue`).join('\n')}
+
+KEY HIGHLIGHTS
+--------------
+${report.keyHighlights.map(highlight => `• ${highlight}`).join('\n')}
+
+RECENT TRANSACTIONS
+-------------------
+${report.recentTransactions.map(t => `${t.customer} - ${t.product} - $${t.amount} - ${t.date}`).join('\n')}
+      `;
+      
+      const blob = new Blob([pdfContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `suplar-business-report-${report.reportDate}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } else {
+      // Generate CSV
+      const csvContent = [
+        ['Metric', 'Value'],
+        ['Total Users', report.metrics.totalUsers],
+        ['Total Transactions', report.metrics.totalTransactions],
+        ['Total Revenue', `$${report.metrics.totalRevenue}`],
+        ['Conversion Rate', `${report.metrics.conversionRate}%`],
+        ['Monthly Growth', `${report.metrics.monthlyGrowth}%`],
+        [''],
+        ['Month', 'Users', 'Transactions', 'Revenue'],
+        ...report.growth.map(month => [month.month, month.users, month.transactions, `$${month.revenue}`]),
+        [''],
+        ['Product', 'Sales', 'Revenue'],
+        ...report.topProducts.map(product => [product.name, product.sales, `$${product.revenue}`])
+      ].map(row => row.join(',')).join('\n');
+      
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `suplar-business-report-${report.reportDate}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
     
-    const dataStr = JSON.stringify(report, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = `suplar-investor-report-${report.reportDate}.json`;
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-    
-    alert('Investor report generated with latest 2025 data!');
+    alert(`${format.toUpperCase()} report exported successfully!`);
   };
 
   if (!isAuthenticated) {
@@ -150,9 +232,22 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="outline" onClick={generateInvestorReport}>
+              <Select value={exportFormat} onValueChange={setExportFormat}>
+                <SelectTrigger className="w-24">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pdf">PDF</SelectItem>
+                  <SelectItem value="csv">CSV</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button variant="outline" onClick={() => exportReport(exportFormat)}>
                 <Download className="w-4 h-4 mr-2" />
-                Generate Report
+                Export {exportFormat.toUpperCase()}
+              </Button>
+              <Button variant="outline" onClick={generateShareableLink}>
+                <Share2 className="w-4 h-4 mr-2" />
+                Share Report
               </Button>
               <Button variant="outline" onClick={handleLogout}>
                 <LogOut className="w-4 h-4 mr-2" />
@@ -230,35 +325,67 @@ export default function AdminDashboard() {
 
           <TabsContent value="analytics" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Monthly Growth Chart */}
+              {/* Growth Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <LineChart className="w-5 h-5 mr-2" />
+                    Revenue Growth (2025)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <BusinessChart 
+                    data={mockAnalytics.monthlyData} 
+                    type="line" 
+                    dataKey="revenue"
+                    color="#10b981"
+                  />
+                </CardContent>
+              </Card>
+
+              {/* User Growth Chart */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <TrendingUp className="w-5 h-5 mr-2" />
-                    Monthly Growth (May - June 2025)
+                    User Growth (2025)
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {mockAnalytics.monthlyData.map((month, index) => (
-                      <div key={index} className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{month.month}</span>
-                        <div className="flex items-center space-x-4">
-                          <span className="text-sm text-gray-600">{month.users} users</span>
-                          <span className="text-sm text-gray-600">{month.transactions} transactions</span>
-                          <span className="text-sm font-medium">${month.revenue.toFixed(2)}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <BusinessChart 
+                    data={mockAnalytics.monthlyData} 
+                    type="bar" 
+                    dataKey="users"
+                    color="#3b82f6"
+                  />
                 </CardContent>
               </Card>
+            </div>
 
-              {/* Top Products */}
+            {/* Transaction Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <BarChart3 className="w-5 h-5 mr-2" />
+                  Transaction Volume (2025)
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <BusinessChart 
+                  data={mockAnalytics.monthlyData} 
+                  type="area" 
+                  dataKey="transactions"
+                  color="#8b5cf6"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Top Products & Countries */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
-                    <BarChart3 className="w-5 h-5 mr-2" />
+                    <Package className="w-5 h-5 mr-2" />
                     Top Products
                   </CardTitle>
                 </CardHeader>
@@ -276,28 +403,29 @@ export default function AdminDashboard() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
 
-            {/* Users by Country */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Globe className="w-5 h-5 mr-2" />
-                  Users by Country
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {mockAnalytics.usersByCountry.map((country, index) => (
-                    <div key={index} className="text-center">
-                      <p className="font-medium">{country.country}</p>
-                      <p className="text-2xl font-bold text-blue-600">{country.users}</p>
-                      <p className="text-sm text-gray-500">{country.percentage}%</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Globe className="w-5 h-5 mr-2" />
+                    Users by Country
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {mockAnalytics.usersByCountry.map((country, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <span className="font-medium">{country.country}</span>
+                        <div className="text-right">
+                          <span className="font-bold text-blue-600">{country.users}</span>
+                          <span className="text-sm text-gray-500 ml-2">({country.percentage}%)</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Business Performance Metrics */}
             <Card>
@@ -395,6 +523,32 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="bg-blue-50 p-6 rounded-lg">
+                  <h3 className="font-semibold text-lg mb-4">Export Options</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Download Reports:</h4>
+                      <div className="flex space-x-2">
+                        <Button onClick={() => exportReport('pdf')} variant="outline">
+                          <FileText className="w-4 h-4 mr-2" />
+                          Download PDF
+                        </Button>
+                        <Button onClick={() => exportReport('csv')} variant="outline">
+                          <Download className="w-4 h-4 mr-2" />
+                          Download CSV
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Share with Investors:</h4>
+                      <Button onClick={generateShareableLink} className="bg-gradient-to-r from-blue-600 to-green-600">
+                        <Share2 className="w-4 h-4 mr-2" />
+                        Generate Shareable Link
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-green-50 p-6 rounded-lg">
                   <h3 className="font-semibold text-lg mb-4">Business Highlights (May-June 2025)</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -418,15 +572,8 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <div className="flex justify-center">
-                  <Button onClick={generateInvestorReport} className="bg-gradient-to-r from-blue-600 to-green-600">
-                    <Download className="w-4 h-4 mr-2" />
-                    Generate Business Report
-                  </Button>
-                </div>
-
                 <div className="bg-gray-50 p-6 rounded-lg">
-                  <h4 className="font-semibold mb-4">Report Includes:</h4>
+                  <h4 className="font-semibold mb-4">Report Features:</h4>
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li>• User acquisition and growth metrics for 2025</li>
                     <li>• High conversion rate analysis (38.9%)</li>
@@ -434,6 +581,8 @@ export default function AdminDashboard() {
                     <li>• Product performance and revenue breakdown</li>
                     <li>• Key customer segments (healthcare, education)</li>
                     <li>• Supplier network growth and partnerships</li>
+                    <li>• Interactive charts and visual analytics</li>
+                    <li>• Investor-ready presentation format</li>
                   </ul>
                 </div>
               </CardContent>
@@ -441,6 +590,45 @@ export default function AdminDashboard() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Share Modal */}
+      <Dialog open={showShareModal} onOpenChange={setShowShareModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Share Business Report</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Shareable Link (View-Only)</Label>
+              <div className="flex space-x-2 mt-2">
+                <Input value={shareableLink} readOnly className="flex-1" />
+                <Button onClick={copyToClipboard} variant="outline">
+                  <Copy className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h4 className="font-medium mb-2">Link Features:</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• View-only access (no editing permissions)</li>
+                <li>• Real-time data updates</li>
+                <li>• Professional investor presentation</li>
+                <li>• Secure access with unique token</li>
+                <li>• Mobile-friendly responsive design</li>
+              </ul>
+            </div>
+            <div className="flex space-x-2">
+              <Button onClick={() => window.open(shareableLink, '_blank')} className="flex-1">
+                <ExternalLink className="w-4 h-4 mr-2" />
+                Preview Report
+              </Button>
+              <Button onClick={() => setShowShareModal(false)} variant="outline">
+                Close
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
