@@ -14,7 +14,13 @@ import {
   ArrowRight,
   CheckCircle,
   Zap,
-  Star
+  Star,
+  Building2,
+  Factory,
+  Stethoscope,
+  Laptop,
+  FlaskConical,
+  Microscope
 } from 'lucide-react';
 
 export function SuplarInfographic() {
@@ -84,8 +90,17 @@ export function SuplarInfographic() {
     }
   ];
 
+  const categories = [
+    { icon: Stethoscope, name: 'Medical Equipment', color: 'text-red-500' },
+    { icon: Zap, name: 'Electrical Materials', color: 'text-yellow-500' },
+    { icon: Laptop, name: 'Office Equipment', color: 'text-blue-500' },
+    { icon: Microscope, name: 'Lab Equipment', color: 'text-purple-500' },
+    { icon: FlaskConical, name: 'Research Tools', color: 'text-green-500' },
+    { icon: Factory, name: 'Industrial Chemicals', color: 'text-gray-500' }
+  ];
+
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 via-white to-green-50 overflow-hidden">
+    <section className="py-20 bg-gradient-to-br from-blue-50 via-white to-green-50 overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
@@ -104,8 +119,47 @@ export function SuplarInfographic() {
           </p>
         </div>
 
-        {/* Process Flow */}
+        {/* Main Infographic - Central Hub Design */}
         <div className="relative mb-20">
+          {/* Central Hub */}
+          <div className="flex justify-center mb-12">
+            <div className="relative">
+              <div className="w-48 h-48 bg-gradient-to-br from-blue-600 to-green-600 rounded-full flex items-center justify-center shadow-2xl">
+                <div className="text-center text-white">
+                  <Package className="w-16 h-16 mx-auto mb-2" />
+                  <h3 className="text-xl font-bold">SUPLAR</h3>
+                  <p className="text-sm opacity-90">Supply Chain Hub</p>
+                </div>
+              </div>
+              
+              {/* Orbiting Elements */}
+              <div className="absolute inset-0 animate-spin" style={{ animationDuration: '20s' }}>
+                {categories.map((category, index) => {
+                  const Icon = category.icon;
+                  const angle = (index * 60) * (Math.PI / 180);
+                  const radius = 140;
+                  const x = Math.cos(angle) * radius;
+                  const y = Math.sin(angle) * radius;
+                  
+                  return (
+                    <div
+                      key={index}
+                      className="absolute w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2"
+                      style={{
+                        left: `calc(50% + ${x}px)`,
+                        top: `calc(50% + ${y}px)`,
+                        animation: 'reverse-spin 20s linear infinite'
+                      }}
+                    >
+                      <Icon className={`w-8 h-8 ${category.color}`} />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Process Flow */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {processSteps.map((step, index) => {
               const Icon = step.icon;
@@ -183,6 +237,47 @@ export function SuplarInfographic() {
           </div>
         </div>
 
+        {/* Interactive Network Visualization */}
+        <div className="mb-16">
+          <Card className="bg-gradient-to-br from-gray-900 to-blue-900 text-white p-12 rounded-2xl overflow-hidden relative">
+            <div className="relative z-10">
+              <h3 className="text-3xl font-bold text-center mb-8">
+                Global Supply Network
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div className="space-y-4">
+                  <div className="w-20 h-20 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto">
+                    <Building2 className="w-10 h-10 text-blue-300" />
+                  </div>
+                  <h4 className="text-xl font-semibold">African Businesses</h4>
+                  <p className="text-blue-200">1000+ companies trust our platform</p>
+                </div>
+                <div className="space-y-4">
+                  <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
+                    <Globe className="w-10 h-10 text-green-300" />
+                  </div>
+                  <h4 className="text-xl font-semibold">Global Suppliers</h4>
+                  <p className="text-green-200">Verified partners across 25+ countries</p>
+                </div>
+                <div className="space-y-4">
+                  <div className="w-20 h-20 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto">
+                    <Shield className="w-10 h-10 text-purple-300" />
+                  </div>
+                  <h4 className="text-xl font-semibold">Secure Transactions</h4>
+                  <p className="text-purple-200">Blockchain-powered security</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-10 left-10 w-32 h-32 border border-white/20 rounded-full"></div>
+              <div className="absolute bottom-10 right-10 w-40 h-40 border border-white/20 rounded-full"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 border border-white/20 rounded-full"></div>
+            </div>
+          </Card>
+        </div>
+
         {/* Stats Banner */}
         <Card className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-8 rounded-2xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
@@ -224,6 +319,17 @@ export function SuplarInfographic() {
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-purple-200/10 rounded-full blur-3xl"></div>
         </div>
       </div>
+      
+      <style jsx>{`
+        @keyframes reverse-spin {
+          from {
+            transform: rotate(360deg);
+          }
+          to {
+            transform: rotate(0deg);
+          }
+        }
+      `}</style>
     </section>
   );
 }
