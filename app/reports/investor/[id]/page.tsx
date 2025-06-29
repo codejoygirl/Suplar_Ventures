@@ -68,15 +68,16 @@ export default function InvestorReport() {
 
   useEffect(() => {
     // Validate access token
-    const token = searchParams.get('token');
-    const reportId = params.id;
+    const token = searchParams?.get('token');
+    const reportId = params?.id;
     
     // In production, this would validate against your backend
+    // For demo purposes, using hardcoded credentials
     if (token && token.startsWith('view-only-') && reportId) {
       setIsValidToken(true);
     }
     setLoading(false);
-  }, [params.id, searchParams]);
+  }, [params?.id, searchParams]);
 
   if (loading) {
     return (
