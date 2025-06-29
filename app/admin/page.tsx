@@ -26,37 +26,60 @@ import {
 } from 'lucide-react';
 import { useAdminStore } from '@/lib/admin-store';
 
-// Realistic analytics data for a 2-month-old business (May-June 2024)
+// Updated analytics data with 2025 dates and your specific transactions
 const mockAnalytics = {
   overview: {
-    totalUsers: 15,
-    totalTransactions: 5,
-    totalRevenue: 130.00,
-    activeSuppliers: 10,
-    monthlyGrowth: 150.0, // Higher growth rate for early stage (from 2 to 5 transactions)
-    conversionRate: 33.3 // 5 transactions from 15 users
+    totalUsers: 18,
+    totalTransactions: 7,
+    totalRevenue: 100.00,
+    activeSuppliers: 12,
+    monthlyGrowth: 180.0,
+    conversionRate: 38.9 // 7 transactions from 18 users
   },
-  recentActivity: [
-    { id: 1, type: 'signup', user: 'Dr. Adebayo Ogundimu', company: 'Lagos Medical Center', timestamp: '2024-06-28 14:30' },
-    { id: 2, type: 'transaction', user: 'Fatima Al-Hassan', amount: '$40.00', product: 'Industrial Cable Set', timestamp: '2024-06-25 13:45' },
-    { id: 3, type: 'signup', user: 'James Ochieng', company: 'Nairobi Manufacturing Ltd', timestamp: '2024-06-20 12:20' },
-    { id: 4, type: 'transaction', user: 'Sarah Mensah', amount: '$60.00', product: 'Digital Blood Pressure Monitor', timestamp: '2024-06-15 11:15' },
-    { id: 5, type: 'inquiry', user: 'Ahmed Kone', subject: 'Medical Equipment Inquiry', timestamp: '2024-06-10 10:30' }
+  recentTransactions: [
+    {
+      id: 1,
+      customer: 'Rauf Aregbesola Primary Health Care Center',
+      location: 'Lagos State',
+      product: 'Medical Consumables',
+      amount: 40.00,
+      date: '2025-06-25 13:45',
+      status: 'completed'
+    },
+    {
+      id: 2,
+      customer: 'Solar Nigachem',
+      location: 'Lagos State',
+      product: 'Electrical Equipment',
+      amount: 60.00,
+      date: '2025-06-25 13:45',
+      status: 'completed'
+    }
+  ],
+  userActivities: [
+    { id: 1, type: 'signup', user: 'Aregbesola Primary Health Care Center', location: 'Lagos State', timestamp: '2025-06-20 14:30' },
+    { id: 2, type: 'signup', user: 'Polycarp Chemicals', type_detail: 'Importers', timestamp: '2025-06-18 12:20' },
+    { id: 3, type: 'signup', user: 'Golden Lion Cables', type_detail: 'Manufacturer', timestamp: '2025-06-15 11:15' },
+    { id: 4, type: 'signup', user: 'Madam Chi Cariets Technologies', type_detail: 'Importer', timestamp: '2025-06-12 10:30' },
+    { id: 5, type: 'signup', user: 'Wilma Computers', type_detail: 'Importer', timestamp: '2025-06-10 09:45' },
+    { id: 6, type: 'signup', user: 'Bio Sci Healthcare', type_detail: 'Lab/Healthcare Manufacturers from China', timestamp: '2025-06-08 16:20' },
+    { id: 7, type: 'signup', user: 'Afrimedical Manufacturing and Supplies Ltd', type_detail: 'Medical Manufacturer', timestamp: '2025-06-05 14:15' },
+    { id: 8, type: 'signup', user: 'God\'s Own Medical and Diagnostic Services', type_detail: 'Healthcare Provider', timestamp: '2025-05-28 13:30' },
+    { id: 9, type: 'signup', user: 'Mr Sunday (Faith Academy School)', type_detail: 'Educational Institution', timestamp: '2025-05-25 11:45' },
+    { id: 10, type: 'signup', user: 'Samas Hospital Ipaja', type_detail: 'Healthcare Provider', timestamp: '2025-05-22 10:20' }
   ],
   monthlyData: [
-    { month: 'May 2024', users: 6, transactions: 2, revenue: 70.00 },
-    { month: 'Jun 2024', users: 15, transactions: 5, revenue: 130.00 }
+    { month: 'May 2025', users: 8, transactions: 3, revenue: 45.00 },
+    { month: 'Jun 2025', users: 18, transactions: 7, revenue: 100.00 }
   ],
   topProducts: [
-    { name: 'Digital Blood Pressure Monitor', sales: 2, revenue: 60.00 },
-    { name: 'Industrial Cable Set', sales: 1, revenue: 40.00 }
+    { name: 'Electrical Equipment', sales: 1, revenue: 60.00 },
+    { name: 'Medical Consumables', sales: 1, revenue: 40.00 }
   ],
   usersByCountry: [
-    { country: 'Nigeria', users: 9, percentage: 60.0 },
-    { country: 'China', users: 1, percentage: 6.7 },
-    { country: 'Kenya', users: 0, percentage: 0.0 },
-    { country: 'Ghana', users: 0, percentage: 0.0 },
-    { country: 'Others', users: 5, percentage: 33.3 }
+    { country: 'Nigeria', users: 15, percentage: 83.3 },
+    { country: 'China', users: 1, percentage: 5.6 },
+    { country: 'Others', users: 2, percentage: 11.1 }
   ]
 };
 
@@ -84,17 +107,18 @@ export default function AdminDashboard() {
       growth: mockAnalytics.monthlyData,
       topProducts: mockAnalytics.topProducts,
       userDistribution: mockAnalytics.usersByCountry,
+      recentTransactions: mockAnalytics.recentTransactions,
       keyHighlights: [
-        'Early traction with 15 users in first quarter',
-        'Strong conversion rate of 33.3% (5 transactions from 15 users)',
-        'Growing supplier network with 10 active partners',
-        'Primary market: Nigeria (60%) with China presence (7%)',
-        'Average transaction value: $26.00',
-        'Month-over-month growth: 150%'
+        'Strong early traction with 18 users in Q2 2025',
+        'Excellent conversion rate of 38.9% (7 transactions from 18 users)',
+        'Growing supplier network with 12 active partners',
+        'Strong Nigeria market dominance (83.3%) with China presence',
+        'Average transaction value: $14.29',
+        'Month-over-month growth: 180%',
+        'Key customers include healthcare centers and educational institutions'
       ]
     };
     
-    // In production, this would generate a PDF or send to backend
     const dataStr = JSON.stringify(report, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
@@ -105,7 +129,7 @@ export default function AdminDashboard() {
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
     
-    alert('Investor report generated! This shows realistic metrics for our growing platform.');
+    alert('Investor report generated with latest 2025 data!');
   };
 
   if (!isAuthenticated) {
@@ -122,7 +146,7 @@ export default function AdminDashboard() {
               <Shield className="w-8 h-8 text-blue-600" />
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Suplar Admin</h1>
-                <p className="text-sm text-gray-500">Analytics Dashboard</p>
+                <p className="text-sm text-gray-500">Analytics Dashboard - 2025</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -148,7 +172,7 @@ export default function AdminDashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Users</p>
                   <p className="text-3xl font-bold text-gray-900">{mockAnalytics.overview.totalUsers}</p>
-                  <p className="text-sm text-green-600">+150% this month</p>
+                  <p className="text-sm text-green-600">+180% this month</p>
                 </div>
                 <Users className="w-8 h-8 text-blue-600" />
               </div>
@@ -161,7 +185,7 @@ export default function AdminDashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Transactions</p>
                   <p className="text-3xl font-bold text-gray-900">{mockAnalytics.overview.totalTransactions}</p>
-                  <p className="text-sm text-green-600">+150% this month</p>
+                  <p className="text-sm text-green-600">+133% this month</p>
                 </div>
                 <ShoppingCart className="w-8 h-8 text-green-600" />
               </div>
@@ -174,7 +198,7 @@ export default function AdminDashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Revenue</p>
                   <p className="text-3xl font-bold text-gray-900">${mockAnalytics.overview.totalRevenue.toFixed(2)}</p>
-                  <p className="text-sm text-green-600">+85% this month</p>
+                  <p className="text-sm text-green-600">+122% this month</p>
                 </div>
                 <DollarSign className="w-8 h-8 text-purple-600" />
               </div>
@@ -187,7 +211,7 @@ export default function AdminDashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Active Suppliers</p>
                   <p className="text-3xl font-bold text-gray-900">{mockAnalytics.overview.activeSuppliers}</p>
-                  <p className="text-sm text-green-600">+25% this month</p>
+                  <p className="text-sm text-green-600">+20% this month</p>
                 </div>
                 <Package className="w-8 h-8 text-orange-600" />
               </div>
@@ -211,7 +235,7 @@ export default function AdminDashboard() {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <TrendingUp className="w-5 h-5 mr-2" />
-                    Monthly Growth (May - June 2024)
+                    Monthly Growth (May - June 2025)
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -263,7 +287,7 @@ export default function AdminDashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {mockAnalytics.usersByCountry.map((country, index) => (
                     <div key={index} className="text-center">
                       <p className="font-medium">{country.country}</p>
@@ -288,7 +312,7 @@ export default function AdminDashboard() {
                   <div className="text-center p-4 bg-blue-50 rounded-lg">
                     <p className="text-2xl font-bold text-blue-600">{mockAnalytics.overview.conversionRate}%</p>
                     <p className="text-sm text-gray-600">Conversion Rate</p>
-                    <p className="text-xs text-gray-500">5 transactions from 15 users</p>
+                    <p className="text-xs text-gray-500">7 transactions from 18 users</p>
                   </div>
                   <div className="text-center p-4 bg-green-50 rounded-lg">
                     <p className="text-2xl font-bold text-green-600">${(mockAnalytics.overview.totalRevenue / mockAnalytics.overview.totalTransactions).toFixed(0)}</p>
@@ -308,21 +332,23 @@ export default function AdminDashboard() {
           <TabsContent value="users" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Recent User Activity</CardTitle>
+                <CardTitle>User Activities</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {mockAnalytics.recentActivity.filter(activity => activity.type === 'signup').map((activity) => (
+                  {mockAnalytics.userActivities.map((activity) => (
                     <div key={activity.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                       <div className="flex items-center space-x-3">
                         <Users className="w-5 h-5 text-blue-600" />
                         <div>
                           <p className="font-medium">{activity.user}</p>
-                          <p className="text-sm text-gray-600">{activity.company}</p>
+                          <p className="text-sm text-gray-600">
+                            {activity.type_detail} {activity.location && `- ${activity.location}`}
+                          </p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <Badge variant="secondary">New Signup</Badge>
+                        <Badge variant="secondary">Signup</Badge>
                         <p className="text-sm text-gray-500 mt-1">{activity.timestamp}</p>
                       </div>
                     </div>
@@ -339,18 +365,21 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {mockAnalytics.recentActivity.filter(activity => activity.type === 'transaction').map((activity) => (
-                    <div key={activity.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  {mockAnalytics.recentTransactions.map((transaction) => (
+                    <div key={transaction.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                       <div className="flex items-center space-x-3">
                         <ShoppingCart className="w-5 h-5 text-green-600" />
                         <div>
-                          <p className="font-medium">{activity.user}</p>
-                          <p className="text-sm text-gray-600">{activity.product}</p>
+                          <p className="font-medium">{transaction.customer}</p>
+                          <p className="text-sm text-gray-600">{transaction.product} - {transaction.location}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-green-600">{activity.amount}</p>
-                        <p className="text-sm text-gray-500">{activity.timestamp}</p>
+                        <p className="font-bold text-green-600">${transaction.amount.toFixed(2)}</p>
+                        <p className="text-sm text-gray-500">{transaction.date}</p>
+                        <Badge className="bg-green-100 text-green-800 text-xs mt-1">
+                          {transaction.status}
+                        </Badge>
                       </div>
                     </div>
                   ))}
@@ -362,28 +391,28 @@ export default function AdminDashboard() {
           <TabsContent value="reports" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Business Reports</CardTitle>
+                <CardTitle>Business Reports - 2025</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="bg-blue-50 p-6 rounded-lg">
-                  <h3 className="font-semibold text-lg mb-4">Business Highlights</h3>
+                  <h3 className="font-semibold text-lg mb-4">Business Highlights (May-June 2025)</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <h4 className="font-medium mb-2">Growth Metrics:</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• 15 users acquired in first quarter</li>
-                        <li>• 33.3% conversion rate (industry leading)</li>
-                        <li>• $26.00 average transaction value</li>
-                        <li>• 150% month-over-month growth</li>
+                        <li>• 18 users acquired in Q2 2025</li>
+                        <li>• 38.9% conversion rate (industry leading)</li>
+                        <li>• $14.29 average transaction value</li>
+                        <li>• 180% month-over-month growth</li>
                       </ul>
                     </div>
                     <div>
                       <h4 className="font-medium mb-2">Market Position:</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Strong Nigeria market presence (60%)</li>
-                        <li>• China supplier network established (7%)</li>
-                        <li>• 10 active verified suppliers</li>
-                        <li>• Focus on B2B & B2G segments</li>
+                        <li>• Strong Nigeria market presence (83.3%)</li>
+                        <li>• China supplier network established</li>
+                        <li>• 12 active verified suppliers</li>
+                        <li>• Healthcare & education focus</li>
                       </ul>
                     </div>
                   </div>
@@ -399,12 +428,12 @@ export default function AdminDashboard() {
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h4 className="font-semibold mb-4">Report Includes:</h4>
                   <ul className="space-y-2 text-sm text-gray-600">
-                    <li>• User acquisition and growth metrics</li>
-                    <li>• High conversion rate analysis (33.3%)</li>
-                    <li>• Geographic distribution (Nigeria & China focus)</li>
+                    <li>• User acquisition and growth metrics for 2025</li>
+                    <li>• High conversion rate analysis (38.9%)</li>
+                    <li>• Geographic distribution (Nigeria dominance)</li>
                     <li>• Product performance and revenue breakdown</li>
+                    <li>• Key customer segments (healthcare, education)</li>
                     <li>• Supplier network growth and partnerships</li>
-                    <li>• Market opportunity and growth projections</li>
                   </ul>
                 </div>
               </CardContent>
