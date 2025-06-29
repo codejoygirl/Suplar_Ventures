@@ -101,7 +101,7 @@ export default function AdminDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState('30d');
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareableLink, setShareableLink] = useState('');
-  const [exportFormat, setExportFormat] = useState('pdf');
+  const [exportFormat, setExportFormat] = useState<'pdf' | 'csv'>('pdf');
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -232,7 +232,7 @@ ${report.recentTransactions.map(t => `${t.customer} - ${t.product} - $${t.amount
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Select value={exportFormat} onValueChange={setExportFormat}>
+              <Select value={exportFormat} onValueChange={(value: 'pdf' | 'csv') => setExportFormat(value)}>
                 <SelectTrigger className="w-24">
                   <SelectValue />
                 </SelectTrigger>
