@@ -10,8 +10,8 @@ export default function TermsPage() {
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => window.history.back()}
             className="mb-4"
           >
@@ -37,7 +37,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">1. Acceptance of Terms</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  By accessing and using Suplar's platform, you accept and agree to be bound by the terms and provision of this agreement. 
+                  By accessing and using Suplar&apos;s platform, you accept and agree to be bound by the terms and provision of this agreement.
                   If you do not agree to abide by the above, please do not use this service.
                 </p>
               </section>
@@ -45,7 +45,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">2. Platform Description</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  Suplar is a B2B, B2C, and B2G supply chain management platform that connects African and global businesses 
+                  Suplar is a B2B, B2C, and B2G supply chain management platform that connects African and global businesses
                   with verified suppliers. We facilitate procurement, payment processing, and logistics coordination.
                 </p>
               </section>
@@ -53,7 +53,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">3. User Accounts</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  Users may browse products without creating an account. However, account creation is required for checkout and order processing. 
+                  Users may browse products without creating an account. However, account creation is required for checkout and order processing.
                   You are responsible for maintaining the confidentiality of your account information.
                 </p>
               </section>
@@ -61,7 +61,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">4. Payment Terms</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  We accept various payment methods including cryptocurrency (USDC, XLM), credit/debit cards, and bank transfers. 
+                  We accept various payment methods including cryptocurrency (USDC, XLM), credit/debit cards, and bank transfers.
                   All prices are subject to change without notice. Payment processing fees may apply.
                 </p>
               </section>
@@ -69,7 +69,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">5. Shipping and Delivery</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  Delivery fees are calculated based on destination zones. We strive to provide accurate delivery estimates, 
+                  Delivery fees are calculated based on destination zones. We strive to provide accurate delivery estimates,
                   but actual delivery times may vary due to factors beyond our control.
                 </p>
               </section>
@@ -77,7 +77,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">6. Limitation of Liability</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  Suplar shall not be liable for any indirect, incidental, special, consequential, or punitive damages, 
+                  Suplar shall not be liable for any indirect, incidental, special, consequential, or punitive damages,
                   including without limitation, loss of profits, data, use, goodwill, or other intangible losses.
                 </p>
               </section>

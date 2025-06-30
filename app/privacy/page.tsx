@@ -10,8 +10,8 @@ export default function PrivacyPage() {
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => window.history.back()}
             className="mb-4"
           >
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">1. Information We Collect</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  We collect information you provide directly to us, such as when you create an account, make a purchase, 
+                  We collect information you provide directly to us, such as when you create an account, make a purchase,
                   or contact us. This includes your name, email address, phone number, shipping address, and payment information.
                 </p>
               </section>
@@ -45,7 +45,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">2. How We Use Your Information</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  We use the information we collect to provide, maintain, and improve our services, process transactions, 
+                  We use the information we collect to provide, maintain, and improve our services, process transactions,
                   send you technical notices and support messages, and communicate with you about products and services.
                 </p>
               </section>
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">3. Information Sharing</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, 
+                  We do not sell, trade, or otherwise transfer your personal information to third parties without your consent,
                   except as described in this policy. We may share information with trusted partners who assist us in operating our platform.
                 </p>
               </section>
@@ -61,7 +61,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">4. Data Security</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  We implement appropriate security measures to protect your personal information against unauthorized access, 
+                  We implement appropriate security measures to protect your personal information against unauthorized access,
                   alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure.
                 </p>
               </section>
@@ -69,7 +69,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">5. Cookies and Tracking</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  We use cookies and similar tracking technologies to track activity on our platform and hold certain information. 
+                  We use cookies and similar tracking technologies to track activity on our platform and hold certain information.
                   You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent.
                 </p>
               </section>
@@ -77,7 +77,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">6. Your Rights</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  You have the right to access, update, or delete your personal information. You may also opt out of certain 
+                  You have the right to access, update, or delete your personal information. You may also opt out of certain
                   communications from us. To exercise these rights, please contact us using the information below.
                 </p>
               </section>

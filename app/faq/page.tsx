@@ -10,7 +10,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { Search, HelpCircle, MessageCircle, Mail } from 'lucide-react';
-import { sendEmail } from '@/lib/email-service';
 
 const faqCategories = [
   {
@@ -134,7 +133,7 @@ export default function FAQPage() {
     const filtered = faqCategories.map(category => ({
       ...category,
       questions: category.questions.filter(
-        q => 
+        q =>
           q.question.toLowerCase().includes(query.toLowerCase()) ||
           q.answer.toLowerCase().includes(query.toLowerCase())
       )
@@ -146,35 +145,66 @@ export default function FAQPage() {
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
-      const emailData = {
-        to: 'info.suplar@gmail.com',
-        subject: `FAQ Support: ${contactForm.subject}`,
-        message: `
-          Support request from FAQ page:
-          
-          Name: ${contactForm.name}
-          Email: ${contactForm.email}
-          Subject: ${contactForm.subject}
-          
-          Message:
-          ${contactForm.message}
-        `,
-        name: contactForm.name,
-        email: contactForm.email
-      };
-      
-      const success = await sendEmail(emailData);
-      
-      if (success) {
-        alert('Your question has been sent! We\'ll get back to you within 24 hours.');
+      const formData = new FormData();
+
+      // Add Web3Forms access key
+      formData.append("access_key", "27627ac5-9c82-49bd-8fe0-74298b41d422");
+
+      // Add form fields
+      formData.append("name", contactForm.name);
+      formData.append("email", contactForm.email);
+      formData.append("subject", contactForm.subject);
+      formData.append("message", contactForm.message);
+
+      // Add custom recipient email
+      formData.append("to", "info.suplar@gmail.com");
+
+      // Add custom subject line
+      formData.append("subject", `FAQ Support: ${contactForm.subject}`);
+
+      // Create formatted message
+      const formattedMessage = `
+New support question from FAQ page:
+
+Name: ${contactForm.name}
+Email: ${contactForm.email}
+Subject: ${contactForm.subject}
+
+Question:
+${contactForm.message}
+
+---
+This email was sent from the Suplar Ventures FAQ page.
+Reply directly to this email to respond to the customer.
+      `;
+
+      formData.append("message", formattedMessage);
+
+      const object = Object.fromEntries(formData);
+      const json = JSON.stringify(object);
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: json,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert('Thank you for your question! We have received it and will get back to you within 24 hours.');
         setContactForm({ name: '', email: '', subject: '', message: '' });
         setShowContactModal(false);
       } else {
         alert('Failed to send question. Please try again.');
       }
     } catch (error) {
+      console.error('Form submission error:', error);
       alert('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -245,7 +275,7 @@ export default function FAQPage() {
                 No results found
               </h3>
               <p className="text-gray-600 mb-4">
-                We couldn't find any FAQs matching "{searchQuery}". Try a different search term or contact our support team.
+                We couldn&apos;t find any FAQs matching &quot;{searchQuery}&quot;. Try a different search term or contact our support team.
               </p>
               <Button onClick={() => handleSearch('')} variant="outline">
                 Clear Search
@@ -262,7 +292,7 @@ export default function FAQPage() {
               Still have questions?
             </h2>
             <p className="text-gray-600 mb-6">
-              Can't find what you're looking for? Our support team is here to help.
+              Can&apos;t find what you&apos;re looking for? Our support team is here to help.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Dialog open={showContactModal} onOpenChange={setShowContactModal}>
@@ -283,7 +313,7 @@ export default function FAQPage() {
                         <Input
                           id="faq-name"
                           value={contactForm.name}
-                          onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                          onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                           required
                         />
                       </div>
@@ -293,7 +323,7 @@ export default function FAQPage() {
                           id="faq-email"
                           type="email"
                           value={contactForm.email}
-                          onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                          onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
                           required
                         />
                       </div>
@@ -303,7 +333,7 @@ export default function FAQPage() {
                       <Input
                         id="faq-subject"
                         value={contactForm.subject}
-                        onChange={(e) => setContactForm({...contactForm, subject: e.target.value})}
+                        onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
                         required
                       />
                     </div>
@@ -312,11 +342,15 @@ export default function FAQPage() {
                       <Textarea
                         id="faq-message"
                         value={contactForm.message}
-                        onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                        onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                         required
                       />
                     </div>
-                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    <Button
+                      type="submit"
+                      className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
+                      disabled={isSubmitting}
+                    >
                       {isSubmitting ? 'Sending...' : 'Send Question'}
                     </Button>
                   </form>
